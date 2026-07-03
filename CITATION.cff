@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite the accompanying paper
+  "Evolution of Binaries Under Stochastic Perturbations".
+title: "stochastic-binaries: companion code for 'Evolution of Binaries Under Stochastic Perturbations'"
+type: software
+authors:
+  - family-names: Caputo
+    given-names: Andrea
+  - family-names: Tomaselli
+    given-names: Giovanni Maria
+  - family-names: Hamilton
+    given-names: Chris
+repository-code: "https://github.com/GimmyTomas/stochastic-binaries"  # TODO(user): confirm URL
+preferred-citation:
+  type: article
+  title: "Evolution of Binaries Under Stochastic Perturbations"
+  authors:
+    - family-names: Caputo
+      given-names: Andrea
+    - family-names: Tomaselli
+      given-names: Giovanni Maria
+    - family-names: Hamilton
+      given-names: Chris
+  year: 2026
+  # TODO(user): fill in the arXiv identifier when available
+  # identifiers:
+  #   - type: other
+  #     value: "arXiv:26MM.NNNNN"
