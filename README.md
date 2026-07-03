@@ -66,4 +66,15 @@ equation label it implements.
 
 ## Citation
 
-If you use this code, please cite the paper (see `CITATION.cff`).
+If you use this code, please cite the paper (arXiv number to be added):
+
+```bibtex
+@article{Caputo:2026xxx,
+    author = "Caputo, Andrea and Tomaselli, Giovanni Maria and Hamilton, Chris",
+    title = "{Evolution of Binaries Under Stochastic Perturbations}",
+    eprint = "XXXX.XXXXX",
+    archivePrefix = "arXiv",
+    primaryClass = "astro-ph.GA",
+    year = "2026"
+}
+```
