@@ -41,8 +41,11 @@ $\eta=\bnt/r\to0$. The proof combines the exact two--body (Rutherford) kick, a c
 self--energy identity, an exact variation--of--parameters (osculating--elements) treatment of the
 close encounter perturbed by the companion, and a matched decomposition of the impact--parameter
 plane whose intermediate scale cancels identically. Every step is reduced either to an explicit
-computation or to elementary quantitative estimates (Gronwall bounds on the incoming leg, an
-angular--momentum bound for close approaches, measure estimates for sequential encounters); the only
+computation or to elementary quantitative estimates (Gronwall bounds on the incoming leg,
+exit--map measure estimates for close and sequential approaches --- including the lensing caustic
+that the companion produces at its Einstein radius $\order{\sqrt{\bnt r\,}}$ when
+the binary is nearly aligned with the flight direction --- and a crude but sufficient dispersal
+estimate for the rare exchange--capture trajectories, on which no asymptotic kick exists); the only
 inputs kept outside the argument are the frozen--binary approximation itself and Newtonian gravity.
 Two physical points deserve emphasis. First, the recoil of the struck body during the encounter is
 essential: pinning the binary components in place would change the cutoff to $Gm_i/V^2$; it is the
@@ -137,6 +140,16 @@ straight--line approximation: as $\bv$ brings the perturber arbitrarily close to
 straight--line kick $\propto1/b$ blows up. The physical content of this note is the precise value of
 the scale at which the exact dynamics \eqref{eq:model} cuts off this divergence.
 
+One definitional point must be fixed at the outset. For a point perturber there is an exceptional
+set $N\subset\Pi_V$ of impact parameters whose trajectory never disperses: the perturber is
+exchanged into a bound pair with one of the bodies, the other body carrying away the excess energy.
+On $N$ the asymptotic kicks do not exist, and the inner integrals in \eqref{eq:Qdef} are understood
+over $\Pi_V\setminus N$. Lemma~\ref{lem:nondisp} bounds $\mu(N)=\order{\sqrt\eta\,b_{90}^2\,
+{\rm polylog}}$ at generic orientations, far below the accuracy of any statement below; physically,
+a formally captured perturber is an artifact of the frozen--binary idealization (A1), since on the
+slow time scale the binary's internal motion and later bath encounters disrupt any such marginally
+bound configuration.
+
 \subsection{The closed form to be proved}
 Fix $\vec V$ and do the $\dd^2b$ integral first. Writing $\vec y\equiv (V/2Gm_*)\,\Delta\vec v$ and
 resolving the in--plane second moment along ($\perp$) and across ($\parallel$) the projected
@@ -160,15 +173,34 @@ with unit coefficient inside the log, and the cutoff--free anisotropy constant $
 fix the $\mathcal O(1)$ constants $-\tfrac23,-\tfrac83$ and the argument of $\mathcal L$. They are
 the object of the theorem.
 
+One bookkeeping choice must be made precise before the theorem can be stated. In the straight--line
+sharp--cutoff scheme the kick is purely transverse (it lies in $\Pi_V$), so the in--plane sum
+$\Yp+\Ypa$ of \eqref{eq:claim-inplane} is at the same time the full trace of the second--moment
+tensor. In the exact dynamics the two differ at $\order1$: the genuine deflection also delivers a
+longitudinal kick (Lemma~\ref{lem:kick}), which contributes $\pi$ per body to the trace, while the
+exact in--plane components fall short of the sharp--cutoff value by the same $\pi$ per body (the
+soft--core ``$\sqrt e$'' discussed after Lemma~\ref{lem:self}). It is the \emph{trace},
+\begin{equation}
+  \mathcal T\;\equiv\;\int_{\Pi_V}|\vec y|^2\,\dd^2b
+  \qquad(\text{all three components of }\vec y),
+  \label{eq:trace-def}
+\end{equation}
+that obeys the closed form of \eqref{eq:claim-inplane}, and by Lemma~\ref{lem:iso} the pair
+(trace, in--plane anisotropy) is exactly what the $\theta$-- and speed--averages \eqref{eq:Qr-int}
+require: how the trace splits between in--plane and longitudinal components is a
+traceless--quadrupole redistribution that cancels identically in $Q_r$ and $Q_t$.
+
 \begin{theorem}[Exactness of the impulsive regularization]
 \label{thm:main}
-Let $\Yp^{\rm exact},\Ypa^{\rm exact}$ be computed from the exact frozen--binary three--body dynamics
-\eqref{eq:model} for a point perturber. Fix any $\alpha\in(0,\tfrac12)$. Then, at fixed $V$,
+Let $\mathcal T^{\rm exact}$ and $(\Yp-\Ypa)^{\rm exact}$ be computed from the exact frozen--binary
+three--body dynamics \eqref{eq:model} for a point perturber --- $\mathcal T$ the trace
+\eqref{eq:trace-def} and $\Yp-\Ypa$ the in--plane anisotropy, both integrals over
+$\Pi_V\setminus N$ (Lemma~\ref{lem:nondisp}). Fix any $\alpha\in(0,\tfrac12)$. Then, at fixed $V$,
 uniformly over orientations with $\sin\theta\ge\eta^{\alpha}$,
 \begin{equation}
-  \Yp^{\rm exact}+\Ypa^{\rm exact}=2\pi\ln\frac{\rp^2}{b_{90,1}b_{90,2}}+o(1),
+  \mathcal T^{\rm exact}=2\pi\ln\frac{\rp^2}{b_{90,1}b_{90,2}}+o(1),
   \qquad
-  \Yp^{\rm exact}-\Ypa^{\rm exact}=2\pi+o(1),
+  (\Yp-\Ypa)^{\rm exact}=2\pi+o(1),
   \label{eq:thm-inplane}
 \end{equation}
 where $o(1)\to0$ as $\eta\to0$ (indeed $\order{\eta^{c}}$ for an explicit $c>0$; see
@@ -185,10 +217,24 @@ the log, survives: the regularization scale is exactly $b_{90,i}=G(m_i+m_*)/V^2$
 \end{theorem}
 
 The restriction $\sin\theta\ge\eta^\alpha$ in the pointwise displays is necessary: for
-$\sin\theta\lesssim\sqrt\eta$ the two close--encounter regions overlap and \eqref{eq:thm-inplane}
-cannot hold uniformly. The averaged statement \eqref{eq:thm-const} is unconditional. The error term
+$\sin\theta\lesssim\sqrt\eta$ the two close--encounter regions overlap (and a lensing caustic
+appears; see Lemma~\ref{lem:cone}) and \eqref{eq:thm-inplane} cannot hold uniformly. The averaged
+statement \eqref{eq:thm-const} is unconditional. The error term
 is numerically $\order{\eta}$ (\S\ref{sec:focusing}); the weaker rate we prove is all that the
 constants require.
+
+\begin{remark}[Where the trace lives]
+\label{rem:trace}
+The in--plane components alone obey
+$\Yp^{\rm exact}+\Ypa^{\rm exact}=2\pi\ln\!\big[\rp^2/(e\,b_{90,1}b_{90,2})\big]+o(1)$: taken by
+themselves they regularize at the Plummer--equivalent scale $b_{90,i}\sqrt e$, and the missing
+$2\pi$ resides in the longitudinal second moment,
+$\int_{\Pi_V}(\vec y\cdot\Vh)^2\,\dd^2b=2\pi+o(1)$. By Lemma~\ref{lem:iso} this split is a
+traceless redistribution invisible to $Q_r,Q_t$, which is why the companion paper's transverse
+sharp--cutoff bookkeeping --- whose in--plane sum \emph{is} its trace --- lands on the correct
+averages. Any comparison of \eqref{eq:thm-inplane} with a numerical experiment must therefore be
+made at the level of the trace (or of $Q_r,Q_t$), never of the in--plane components alone.
+\end{remark}
 
 \subsection{Assumptions and scope}
 \label{sec:scope}
@@ -202,13 +248,15 @@ of the regularization question and equally vanishing in the limit.
 \item[(A2)] \textbf{Newtonian point perturber.} No relativity; $\tilde\rho_*(k)=1$. The whole
 question is meaningful only here, since any extended profile is self--regularizing.
 \item[(A3)] \textbf{Rigour.} Lemmas~\ref{lem:kick}--\ref{lem:iso} (single body),
-\ref{lem:harmonic}--\ref{lem:cone} (decomposition and measure estimates),
+\ref{lem:harmonic}--\ref{lem:nondisp} (decomposition, measure estimates, dispersal),
 \ref{lem:map}--\ref{lem:fidelity} (near region), \ref{lem:far} (far region) and \ref{lem:tail}
 (speed average) are proved. The proofs of Lemmas~\ref{lem:map}--\ref{lem:fidelity} reduce the
 dynamics to (i) an exact variation--of--parameters identity for the osculating elements of the
 $m_*$--$m_1$ relative orbit, and (ii) quantitative regularity of the \emph{incoming leg} of the
-Kepler flow, stated as Lemma~\ref{lem:kepler-reg} in Appendix~\ref{app:kepler} with an
-explicit--formula proof strategy; the constants there are computable but not optimized. No scaling
+Kepler flow, stated as Lemma~\ref{lem:kepler-reg} in Appendix~\ref{app:kepler} and proved there by
+explicit--formula calculus; the constants there, and the multi--pass channel bookkeeping of
+Lemma~\ref{lem:nondisp}, are computable but deliberately not optimized --- only finiteness (with
+polynomial $\lambda$--dependence) and smallness, respectively, are used. No scaling
 claim is used in place of a needed bound.
 \end{enumerate}
 
@@ -355,11 +403,14 @@ positions ($\beta_i\equiv|\bv-\vec s_i^{\,\rm proj}|$) and the \emph{far} remain
 $\{\beta_1\ge\rho\ \text{and}\ \beta_2\ge\rho\}$. Orientations are split into the \emph{generic}
 class $\sin\theta\ge\eta^\alpha$ (where $\rp\ge r\eta^\alpha\gg2\rho$, so the near disks are far
 apart) and the \emph{near--aligned cone} $\sin\theta<\eta^\alpha$, handled wholesale by
-Lemma~\ref{lem:cone}. We fix $\alpha\in(0,\tfrac12)$ once and for all.
+Lemma~\ref{lem:cone}. We fix $\alpha\in(0,\tfrac12)$ once and for all. All $\dd^2b$ integrals from
+here on are understood over the dispersing set --- the non--dispersing set $N$ of
+Lemma~\ref{lem:nondisp} removed --- and the cost of the excision is booked in the tally of
+\S\ref{sec:tally}.
 
-Two facts about the near disks, both needed later, are worth isolating. The first is an exact
-cancellation that the naive bound misses; the second is the measure estimate that replaces a
-pointwise bound which is \emph{false} for the exact dynamics.
+Three facts about the exact dynamics, all needed later, are worth isolating. The first is an exact
+cancellation that the naive bound misses; the others are measure estimates that replace pointwise
+bounds which are \emph{false} for the exact dynamics.
 
 \begin{lemma}[Harmonicity cancellation on the near disk]
 \label{lem:harmonic}
@@ -400,7 +451,7 @@ generic orientation ($\sin\theta\ge\eta^\alpha$) one has, for $\eta$ small,
 \begin{equation}
   \int_S|\vec y_2|^2\,\dd^2b\;\le\;C\,\frac{\eta^2}{\sin^4\theta}\,\ln\frac1\eta\,,
   \qquad
-  \int_S|\vec y_1||\vec y_2|\,\dd^2b\;\le\;C\,\frac{\eta^{2}}{\sin^{4}\theta}\,\ln\frac1\eta\, .
+  \int_S|\vec y_1||\vec y_2|\,\dd^2b\;\le\;C\,\frac{\eta^{3/2}}{\sin^{3}\theta}\, .
   \label{eq:seq}
 \end{equation}
 The same bounds hold for the set reaching body 2 \emph{before} body 1 (relevant when
@@ -431,9 +482,25 @@ over $s\in[b_{90},\rho]$,
   =C\,\frac{\eta^2}{\sin^4\theta}\,\#\{\text{dyadic scales}\}
   \le C\,\frac{\eta^2}{\sin^4\theta}\ln\frac1\eta .
 \end{equation}
-For the mixed term use $|\vec y_1|\le C/\max(\beta_1,b_{90})\le C/b_{90}$ on the sequential set
-together with $|\vec y_2|\le C/s$ and the same dyadic count; the product bound is no larger. The deep core
-$s<b_{90}$ contributes one more dyadic term with the capped kick, within the stated bound.
+For the mixed term the crude cap $|\vec y_1|\le C/b_{90}$ would lose a factor $\eta^{-1/2}$;
+instead use that on $S$ the exit angle equals the geometric angle $\Theta_{\rm geo}$
+($\sin\Theta_{\rm geo}=\sin\theta$) up to $\order{s/r}$, so the body--1 kick is pinned by
+Lemma~\ref{lem:kick} at $\beta_1\simeq b_{90}\cot(\Theta_{\rm geo}/2)$:
+$|\vec y_1|\le C\sin(\Theta_{\rm geo}/2)/b_{90}$. Since $\sin(\Theta/2)\ge\tfrac12\sin\Theta$ on
+$(0,\pi)$, the dyadic term of the mixed integral is
+\begin{equation*}
+  \frac{C\sin(\Theta_{\rm geo}/2)}{b_{90}}\cdot\frac{C}{s}\cdot
+  \frac{C\,b_{90}^2\,s^2}{r^2\sin^4(\Theta_{\rm geo}/2)}
+  \;=\;\frac{C\,b_{90}\,s}{r^2\sin^3(\Theta_{\rm geo}/2)}
+  \;\le\;\frac{C\,b_{90}\,s}{r^2(\sin\theta/2)^3}\,,
+\end{equation*}
+and the dyadic sum over $s\le\rho$ is geometric, dominated by $s=\rho$:
+$\int_S|\vec y_1||\vec y_2|\le C\,b_{90}\rho/(r^2\sin^3\theta)\le C\,\eta^{3/2}/\sin^3\theta$
+(no logarithm). The deep core
+$s<b_{90}$ contributes one more dyadic term with the capped kicks, within the stated bounds. Note
+$\eta^{3/2}/\sin^3\theta\le\sqrt\eta/\sin\theta$ on $\sin\theta\ge\sqrt\eta$, so the mixed term
+sits inside the $\order{\sqrt\eta/\sin\theta}$ error budget of \S\ref{sec:near-assembly} at every
+generic orientation.
 \end{proof}
 
 \begin{remark}
@@ -446,45 +513,188 @@ such trajectories, Lemma~\ref{lem:seq}, that makes the cross and self--2 contami
 disk negligible.
 \end{remark}
 
-\begin{lemma}[The near--aligned cone]
+\begin{lemma}[All orientations: exit--map measure estimate]
 \label{lem:cone}
-There is $C$ such that for all orientations (including $\sin\theta<\eta^\alpha$) and $\eta$ small,
+There is $C$ such that for all orientations (including $\sin\theta<\eta^\alpha$), all
+$s\in[b_{90},r]$ and $\eta$ small:
+\begin{enumerate}
+\item[(i)] on the dispersing set, $|\vec y_i|\le C/b_{90}$ always, and
+$|\vec y_i|\le C/p_i$ whenever the pericenter $p_i$ w.r.t.\ body $i$ exceeds $C'b_{90}$;
+\item[(ii)] the set of impact parameters reaching pericenter $\le s$ of body $i$ has measure
 \begin{equation}
-  \int_{\Pi_V}|\vec y|^2\,\dd^2b\;\le\;C\ln^3\frac1\eta .
+  \mu\big\{\bv:\ p_i\le s\big\}\;\le\;C\ln^2\!\frac1\eta\,
+  \Big[\,s^2\;+\;\frac{\rho\,s^2}{\max(r\sin\theta,\,s)}\,\Big];
+  \label{eq:cone-measure}
+\end{equation}
+\item[(iii)] consequently
+\begin{equation}
+  \int_{\Pi_V\setminus N}|\vec y|^2\,\dd^2b\;\le\;
+  C\ln^3\!\frac1\eta\,\Big[\,1+\frac{\rho}{\max(r\sin\theta,\,b_{90})}\,\Big]
+  \;\le\;C\,\eta^{-1/2}\ln^3\!\frac1\eta\,,
   \label{eq:cone}
 \end{equation}
-Consequently the cone $\sin\theta<\eta^\alpha$ contributes $\order{\eta^{2\alpha}\ln^3(1/\eta)}$ to
+and the cone $\sin\theta<\eta^\alpha$ contributes $\order{\eta^{2\alpha}\ln^3(1/\eta)}$ to
 the $\theta$--averages $\int_0^\pi(\cdots)\sin\theta\,\dd\theta$ in \eqref{eq:Qr-int} below.
+\end{enumerate}
+\end{lemma}
+
+The second term of \eqref{eq:cone-measure} is a genuine caustic, not an artifact of the method:
+when the binary axis is nearly aligned with $\Vh$, the upstream body acts as a gravitational lens
+of Einstein radius $\beta_E=\sqrt{2Gm_j\ell/V^2}=\order\rho$ ($\ell$ the body--body longitudinal
+distance), and an entire annulus of radius $\beta_E$ and width $\order s$ focuses onto the
+downstream body (verified by direct integration in \texttt{deflection\_map\_check.py},
+\S\ref{sec:numerics}). At exact alignment the set $\{p_i\le s\}$ therefore has measure
+$\simeq2\pi\beta_E\,s$, and no bound $o(\rho s)$ is possible; uniformly in $\theta$ the integral
+\eqref{eq:cone} really can reach the size $\eta^{-1/2}$, and it is only the small solid angle
+$\order\eta$ of the aligned configurations that keeps the caustic invisible in the averages.
+
+\begin{proof}
+\emph{(i) Kick caps.} On the dispersing set all mutual distances eventually grow and the potentials
+vanish, so by energy conservation in \eqref{eq:model} (all included forces are conservative and the
+bodies start at rest) $\tfrac12 m_*V^2=\tfrac12 m_*v_*^2+\sum_i\tfrac12 m_iv_i^2$ finally, whence
+$|\Delta\vec v_i|\le\sqrt{m_*/m_i}\,V$, i.e.\ $|\vec y_i|\le C/b_{90}$. If moreover $p_i\ge C'b_{90}$
+and the trajectory carries no hard pass in the sense of Lemma~\ref{lem:nondisp}, the local speed of
+the $m_*$--$m_i$ relative orbit stays in $[cV,CV]$ (the companion's work along any leg that keeps a
+distance $\ge C'b_{90}$ from both bodies is $\le CGm/(C'b_{90})\le CV^2/C'$; fix $C'$ by the mass
+ratios), and the osculating two--body kick of Lemma~\ref{lem:kick} gives $|\vec y_i|\le C/p_i$; on
+the hard--pass set the uniform cap applies.
+
+\emph{(ii) Exit--map counting.} Let $j$ be the other body, $\ell\le r$ the longitudinal distance
+from body $j$ to the transverse plane of body $i$, and $\vec\Delta_\perp$ their transverse offset,
+$\Delta_\perp=r\sin\theta$. If body $i$ is met first, the incoming leg is straight up to the
+accumulated impulse of the smooth far field, a transverse relabeling $\order{b_{90}\ln(1/\eta)}$
+(as in Lemma~\ref{lem:map}), and $p_i\le s$ forces the asymptotic miss distance below
+\begin{equation}
+  w\;\equiv\;C\big[s+\sqrt{s\,b_{90}}+b_{90}\ln(1/\eta)\big]\;\le\;Cs\ln(1/\eta)
+  \label{eq:wdef}
+\end{equation}
+(angular momentum $L_i\le sV[1+2b_{90}/s]^{1/2}$ at pericenter at bounded local speed), giving
+measure $\le\pi w^2$: the first term of \eqref{eq:cone-measure}. Otherwise the trajectory first
+passes body $j$, at some pericenter $q\le r$. The passage deflects it --- in the osculating sense,
+up to the same $\order{b_{90}\ln(1/\eta)}$ relabelings, absorbed into $w$ --- by the Rutherford
+angle $\Theta(\beta)$, $\tan(\Theta/2)=b_{90,j}/\beta$, in the plane spanned by $\Vh$ and the
+impact direction, after which the leg to body $i$ is again straight. Introduce polar coordinates
+$\bv=\vec s_j^{\,\rm proj}+\beta\,\hat e(\varphi)$; the backscattered part $\Theta\ge\pi/2$ has
+$\beta\le Cb_{90}$, hence measure $\le Cb_{90}^2\le Cw^2$, absorbed in the first term. For
+$\Theta<\pi/2$ the transverse miss vector at body $i$ is
+\begin{equation}
+  \vec m(\beta,\varphi)=g(\beta)\,\hat e(\varphi)-\vec\Delta_\perp+\order{b_{90}\ln(1/\eta)},
+  \qquad g(\beta)\equiv\beta-\ell\tan\Theta(\beta),
+  \label{eq:exit-map}
+\end{equation}
+and $p_i\le s$ forces $|\vec m|\le w$. The one property that matters is the monotonicity of $g$:
+since $\Theta'(\beta)<0$,
+\begin{equation*}
+  g'(\beta)\;=\;1-\ell\,\Theta'(\beta)\sec^2\!\Theta(\beta)\;\ge\;1 ,
+\end{equation*}
+so $g$ is strictly increasing and sweeps its range exactly once; it vanishes at the Einstein radius
+$\beta_E\simeq\sqrt{2b_{90,j}\ell}\le C\rho$ (for small angles $g(\beta)\simeq\beta-2b_{90,j}\ell/\beta$:
+rays inside the ring are bent past the axis, rays outside not enough). Counting in the coordinates
+$(g,\varphi)$,
+\begin{equation*}
+  \mu\;=\;\int_{|g\hat e(\varphi)-\vec\Delta_\perp|\le w}
+  \frac{\beta(g)}{g'(\beta(g))}\;\dd g\,\dd\varphi
+  \;\le\;\Big[\sup_{|g|\le\Delta_\perp+w}\beta(g)\Big]\times
+  \big|\{(g,\varphi):\,|g\hat e(\varphi)-\vec\Delta_\perp|\le w\}\big| .
+\end{equation*}
+The $(g,\varphi)$--set has $|g|\in[\Delta_\perp-w,\Delta_\perp+w]$ and, when $\Delta_\perp>w$,
+azimuth confined to two windows of width $\le Cw/\Delta_\perp$; its measure is
+$\le Cw\min(2\pi,Cw/\Delta_\perp)$. Solving $g(\beta)=\pm\Delta_\perp$ gives
+$\beta\le C(\Delta_\perp+\beta_E)$ on the outer branch and $\beta\le C\beta_E$ near the ring, so
+$\sup\beta\le C(\Delta_\perp+\beta_E+w)$ and
+\begin{equation*}
+  \mu\;\le\;C\,(\Delta_\perp+\beta_E+w)\,w\,\min\Big(1,\frac{w}{\Delta_\perp}\Big)
+  \;\le\;C\Big[w^2+\frac{\beta_E\,w^2}{\max(\Delta_\perp,w)}\Big],
+\end{equation*}
+which is \eqref{eq:cone-measure} after inserting \eqref{eq:wdef}. Histories with two or more
+intermediate passes below $\rho$ feed the target through compositions of Rutherford maps; each
+additional pass multiplies the measure by a targeting factor $\le C\rho^2/r^2$ (the same dyadic
+bookkeeping as in Lemma~\ref{lem:seq}), so their sum is dominated by the single--pass count.
+
+\emph{(iii) Assembly.} By \eqref{eq:selfcross} and Cauchy--Schwarz it suffices to bound each
+$\int|\vec y_i|^2$. Dyadically for $s\in[b_{90},r]$, using (i) and (ii),
+\begin{equation*}
+  \int_{p_i\le r}|\vec y_i|^2
+  \;\le\;\sum_{\rm dyadic}\frac{C}{s^2}\cdot C\ln^2\!\frac1\eta
+  \Big[s^2+\frac{\rho s^2}{\max(r\sin\theta,s)}\Big]
+  \;\le\;C\ln^3\!\frac1\eta\Big[1+\frac{\rho}{\max(r\sin\theta,\,b_{90})}\Big];
+\end{equation*}
+for $p_i>r$ the straight--line dipole estimate applies ($|\vec y|\le Cr/b^2$; for $b\ge 2r$ the
+exit map gives $g(\beta)\ge\beta[1-2b_{90}r/\beta^2]\ge\beta/2$, so the pericenter stays above
+$b/4$) and gives a convergent, $\order1$ contribution. Finally, for the cone average, split at
+$\sin\theta=b_{90}/r$ and $\sin\theta=\sqrt\eta$:
+\begin{equation*}
+  \int_0^{\arcsin\eta^\alpha}\!\!C\ln^3\!\frac1\eta
+  \Big[1+\frac{\rho}{\max(r\sin\theta,b_{90})}\Big]\sin\theta\,\dd\theta
+  \;\le\;C\big[\eta^{2\alpha}+\eta^{\frac12+\alpha}+\eta^{\frac32}\big]\ln^3\!\frac1\eta
+  \;=\;\order{\eta^{2\alpha}\ln^3(1/\eta)} ,
+\end{equation*}
+the caustic term being confined to a solid angle so small that it never threatens the average.
+\end{proof}
+
+\begin{lemma}[Dispersal off a tuned hard set]
+\label{lem:nondisp}
+Let $N\subset\Pi_V$ be the set of impact parameters whose perturber fails to escape,
+$\liminf_{t\to\infty}\min_i|\vec x_*(t)-\vec x_i(t)|<\infty$. Call a \emph{hard pass} a passage
+with pericenter $\le Cb_{90}$ w.r.t.\ one of the bodies. Then every trajectory of $N$ (a) contains
+a hard pass, and (b) exits its last passage below $\rho$ with speed $\le CV\eta^{1/4}$ relative to
+the (slow) bodies. Consequently
+\begin{equation}
+  \mu(N)\;\le\;C\sqrt\eta\;b_{90}^2\ln^4\!\frac1\eta\quad(\sin\theta\ge\eta^\alpha),\qquad
+  \mu(N)\;\le\;C\sqrt\eta\;\rho\,b_{90}\ln^4\!\frac1\eta\quad(\text{all orientations}),
+  \label{eq:Nmeasure}
+\end{equation}
+and excising $N$ changes the trace and anisotropy integrals by $\order{\sqrt\eta\ln^4(1/\eta)}$ at
+generic orientations, the near--annulus bookkeeping of \S\ref{sec:near-assembly} by
+$\order{\sqrt\eta\ln^4(1/\eta)/\lambda^2}$, and the $\theta$--averages by $\order{\eta\,{\rm polylog}}$.
 \end{lemma}
 
 \begin{proof}
-By \eqref{eq:selfcross} and Cauchy--Schwarz it suffices to bound each
-$\int|\vec y_i|^2$. Split the plane at $\beta_i^{\rm osc}\equiv$ the pericenter distance of the
-perturber--body--$i$ relative orbit. \emph{(i) Kick bound:} by energy conservation in
-\eqref{eq:model} (all included forces are conservative and the bodies start at rest),
-$\tfrac12 m_*V^2=\tfrac12 m_*v_*^2+\sum_i\tfrac12 m_iv_i^2$ finally, so
-$|\Delta\vec v_i|\le\sqrt{m_*/m_i}\,V$ always; moreover if the trajectory's pericenter w.r.t.\ body
-$i$ is $p_i$, then $|\vec y_i|\le C/\max(p_i,b_{90,i})$ (two--body kick at the local osculating
-elements, Lemma~\ref{lem:kick}, plus the uniform cap above). \emph{(ii) Measure bound:} the set of
-asymptotic $\bv$ reaching pericenter $\le s$ of body $i$ has measure $\le Cs^2\ln^2(1/\eta)$ for
-$s\in[b_{90},r]$. Indeed the angular momentum $L_i$ of the relative orbit about body $i$ changes
-only by the companion's torque, $|\dot L_i|\le|d_i\times g_j|$ with $|g_j|\le Gm_j/q_j^2$; along any
-incoming path the integrated torque is $\order{(Gm_j/V)\ln(1/\eta)}=\order{Vb_{90}\ln(1/\eta)}$
-unless the path first scatters strongly off body $j$. Since pericenter $\le s$ forces
-$L_i\lesssim s\,V[1+2b_{90}/s]^{1/2}\le CsV$ at pericenter (energy bound on the local speed), the
-no--strong--scattering part of the set has radius $\le s+C\sqrt{sb_{90}}+Cb_{90}\ln(1/\eta)$, hence
-measure $\le Cs^2\ln^2(1/\eta)$ for $s\ge b_{90}$. The doubly--scattered part (strong deflection by
-body $j$ first) is counted as in Lemma~\ref{lem:seq}: trajectories from a dyadic annulus $[p,2p]$
-around body $j$ emerge in an annular cone of opening $\Theta(p)\simeq2b_{90}/p$ and must hit a disk
-of radius $s$ at distance $\order r$; the feeding measure is
-$\le C p^2\cdot(s^2/r^2)/\Theta(p)^2=Cs^2p^4/(r^2b_{90}^2)\le Cs^2$ after summing $p\le\rho$.
-\emph{(iii) Assembly:} dyadically for $s\in[b_{90},r]$,
-$\int_{p_i\le r}|\vec y_i|^2\le\sum(C/s^2)(Cs^2\ln^2)\le C\ln^3(1/\eta)$; for $p_i>r$ the
-straight--line dipole estimate applies ($|\vec y|\le Cr/b^2$ once the pericenter bound guarantees
-$b/2\le p_i$, which holds for $b\ge Cb_{90}$ by the same angular--momentum argument) and gives a
-convergent, $\order 1$ contribution. Finally
-$\int_0^{\arcsin\eta^\alpha}\sin\theta\,\dd\theta=\order{\eta^{2\alpha}}$.
+\emph{(a) A hard pass is necessary.} Failure to escape forces the perturber's osculating energy
+w.r.t.\ one body, $E_i=\tfrac12|\vec u_i|^2-\mu_i/d_i$, to satisfy $\liminf E_i\le0$ (were both
+$E_i\ge\epsilon>0$ at all late times, both Kepler problems would be uniformly hyperbolic with
+perturbations decaying quadratically, and the perturber would escape). $E_i$ changes only through
+the companion, $\dot E_i=\vec u_i\cdot\vec g_j$, and the work is a \emph{line} integral:
+$|\!\int\vec g_j\cdot\dd\vec x\,|\le CGm_j/q$ along any leg whose closest approach to body $j$ is
+$q$. Starting from $E_i=\tfrac12V^2$, reaching $E_i\le0$ therefore requires
+$\sum_{\rm passes}CGm_j/q_{\rm pass}\ge\tfrac12V^2$; since passes at $q\ge\rho$ contribute
+$\le CV^2\sqrt\eta$ each and their number below any scale is controlled by the targeting count of
+Lemma~\ref{lem:cone}(ii), some pass must have $q\le Cb_{90}\ln(1/\eta)$ --- a hard pass, up to the
+logarithm which we absorb into the polylog of \eqref{eq:Nmeasure}.
+
+\emph{(b) The exit must be tuned.} Let $T$ be the last time the perturber is within $\rho$ of
+either body. After $T$ the total remaining work is $\le CGm/\rho=CV^2\sqrt\eta$, so
+$E_i(T^+)\le CV^2\sqrt\eta$ for the eventual partner $i$; with $d_i(T)\ge r/2$ this forces the exit
+speed $|\vec u_i(T^+)|\le CV\eta^{1/4}$.
+
+\emph{(c) Measure.} The set of trajectories with a hard pass has measure
+$\le C\ln^2(1/\eta)[b_{90}^2\ln^2(1/\eta)+\rho b_{90}^2/\max(r\sin\theta,b_{90})]$ by
+\eqref{eq:cone-measure} at $s=Cb_{90}\ln(1/\eta)$. Within it, the exit velocity of a pass is an
+explicit two--body (Rutherford) map of the pass parameters: the exit speed in the frame of the
+slow bodies is $|\vec V_{\rm CM}+\vec v'\,|$ with $|\vec V_{\rm CM}|=\frac{m_*}{m_*+m_j}v_{\rm in}$
+and $|\vec v'\,|=\frac{m_j}{m_*+m_j}v_{\rm in}$, so an exit speed $\le CV\eta^{1/4}$ requires the
+deflection to lie in an explicit window of the pass's impact parameter of relative area
+$\le C\sqrt\eta$ (for $m_*\ne m_j$ the single--pass window is empty --- the exit speed is bounded
+below by $\frac{|m_*-m_j|}{m_*+m_j}v_{\rm in}$ --- and slower multi--pass channels, in which an
+earlier pass first sets a body moving, are needed). Later channels (a slow exit that must still
+find a further $\rho$--pass, or repeated hard passes) each pay an additional targeting factor
+$\le C\max(\rho^2/r^2,\eta)\,{\rm polylog}\le C\sqrt\eta$ by the counting of
+Lemma~\ref{lem:cone}(ii), so the channel sum converges geometrically and
+\eqref{eq:Nmeasure} follows. The excision costs are then immediate: the excluded closed--form
+weight is $\le\mu(N)\cdot\sup|\vec y|^2\le\mu(N)\cdot C/b_{90}^2$ at generic orientations, and
+$\le\mu(N)\cdot C/(\lambda b_{90})^2$ on the annulus $\mathcal A_\lambda$; the aligned
+configurations are confined to the cone, whose $\sin\theta\,\dd\theta$ measure is $\order\eta$.
 \end{proof}
+
+\begin{remark}
+Lemma~\ref{lem:nondisp} is deliberately crude: nothing below needs more than
+$\mu(N)=o\big(b_{90}^2/\ln^2(1/\eta)\big)$ at generic orientations, and the bound proved has an
+$\eta^{1/2}$ to spare. The physical channel it controls is real --- for $m_*=m_j$ a
+near--head--on pass can stop the perturber dead (Newton's cradle), leaving it bound to the other
+body --- but it is tuned twice over: the trajectory must first score a hard pass
+($\mu\sim b_{90}^2$), and the pass must then cancel the perturber's speed to $\order{V\eta^{1/4}}$
+accuracy ($\mu$--fraction $\sqrt\eta$).
+\end{remark}
 
 \section{The near region: the close encounter is two--body up to controlled errors}
 \label{sec:near}
@@ -653,14 +863,13 @@ scalar diagnostic would misread as a Jacobian distortion.
 
 \begin{lemma}[Kick fidelity]
 \label{lem:fidelity}
-In the setting of Lemma~\ref{lem:map}, for $\bv\in\mathcal A_\lambda\setminus S$ (the sequential set
-$S$ of Lemma~\ref{lem:seq} removed),
+In the setting of Lemma~\ref{lem:map}, for $\bv\in\mathcal A_\lambda\setminus(S\cup N)$ (the
+sequential set $S$ of Lemma~\ref{lem:seq} and the non--dispersing set $N$ of
+Lemma~\ref{lem:nondisp} removed),
 \begin{equation}
-  \vec y_1(\bv)\;=\;\vec y_1^{\rm 2B}\big(\vec\beta_1^{\,*},V_1^*\big)\,\big[1+\epsilon_1(\bv)\big]
-  \;+\;\vec\Delta(\bv),
+  \vec y_1(\bv)\;=\;\vec y_1^{\rm 2B}\big(\vec\beta_1^{\,*},V_1^*\big)\,\big[1+\epsilon_1(\bv)\big],
   \qquad
-  |\epsilon_1|\;\le\;C\,K(\lambda)\,\frac{\eta}{\sin^2\theta}\,\ln\frac1\eta\,,\qquad
-  |\vec\Delta|\;\le\;\frac{C}{r\sin\theta}\,,
+  |\epsilon_1|\;\le\;C\,K(\lambda)\,\frac{\eta^{3/2}}{\sin^2\theta}\,\ln\frac1\eta\,,
   \label{eq:fidelity}
 \end{equation}
 where $\vec y_1^{\rm 2B}(\vec\beta_1,V_1)$ is the exact isolated two--body kick of
@@ -671,11 +880,11 @@ Lemma~\ref{lem:kick} evaluated at the osculating pericenter elements, with magni
   \qquad b_{90,1}(V_1^*)=\frac{G(m_1+m_*)}{V_1^{*2}} .
   \label{eq:y2B}
 \end{equation}
-The additive piece $\vec\Delta$ is the companion's direct impulse on the perturber routed through
-the relative--coordinate bookkeeping; it is bounded, nearly $\bv$--independent across the near disk
-(it varies on the scale $r\sin\theta$), and contributes
-$\order{\sqrt\eta/\sin\theta}$ to the near--region integrals (see below), on top of which its
-azimuthal average against $\vec y_1^{\rm 2B}$ nearly cancels.
+In particular the companion's \emph{direct} impulse on the perturber,
+$\frac{m_*}{m_1+m_*}\int\vec g_2\,\dd t$ --- an $\order{1/(r\sin\theta)}$ vector in the units of
+$\vec y$, and much larger than the error above --- does \emph{not} appear in $\vec y_1$: it cancels
+identically in the bookkeeping (see the proof). The companion acts on the body--1 kick only through
+the relabeling $(\vec\beta_1^{\,*},V_1^*)$ and the tidal distortion of the arc.
 \end{lemma}
 
 Note the prefactor $(V/V_1^*)^2=1-\order{\eta/\sin\theta}$ in \eqref{eq:y2B}: the kick normalization
@@ -686,32 +895,38 @@ neither may be dropped silently in \eqref{eq:fidelity}--\eqref{eq:y2B}.
 
 \begin{proof}
 Body 1 feels only the perturber, so exactly
-$\Delta\vec v_1=Gm_*\!\int\hat d/d^2\,\dd t$ along the true relative orbit. From \eqref{eq:releq},
-$\int\mu_1\hat d/d^2\,\dd t=-\Delta\vec u+\int\vec g_2\,\dd t$, whence
-\begin{equation}
-  \Delta\vec v_1=\frac{m_*}{m_1+m_*}\Big[-\Delta\vec u+\int\vec g_2\,\dd t\Big],
-  \qquad
-  \Delta\vec v_1^{\rm 2B}=-\frac{m_*}{m_1+m_*}\,\Delta\vec u^{\,0},
-\end{equation}
-where $\vec d^{\,0}(t)$ is the isolated Kepler orbit (parameter $\mu_1$) with the same position and
-velocity as the true relative orbit at $t_{\rm p}$; its asymptotic elements are exactly
+$\Delta\vec v_1=Gm_*\!\int\hat d/d^2\,\dd t$ along the true relative orbit, and likewise
+$\Delta\vec v_1^{\rm 2B}=Gm_*\!\int\hat d^{\,0}/(d^0)^2\,\dd t$ along the isolated Kepler orbit
+$\vec d^{\,0}(t)$ (parameter $\mu_1$) with the same position and velocity as the true relative
+orbit at $t_{\rm p}$; the asymptotic elements of $\vec d^{\,0}$ are exactly
 $(\vec\beta_1^{\,*},V_1^*)$ and its body--1 kick has magnitude \eqref{eq:y2B} by
 Lemma~\ref{lem:kick} (the factor $(V/V_1^*)^2$ arising because $\vec y_1$ is normalized with the
-asymptotic $V$). The additive term is
-$\vec\Delta=(V/2Gm_*)\tfrac{m_*}{m_1+m_*}\int\vec g_2\,\dd t$: since the trajectory passes the
-companion no closer than $q\ge\rp/2$, $|\int\vec g_2\,\dd t|\le CGm_2/(qV)$, giving
-$|\vec\Delta|\le C/(r\sin\theta)$, essentially constant across the near disk.
+asymptotic $V$). Hence, identically,
+\begin{equation}
+  \vec y_1-\vec y_1^{\rm 2B}
+  \;=\;\frac{V}{2\mu_1}\int\Big[\mu_1\frac{\hat d}{d^{2}}-\mu_1\frac{\hat d^{\,0}}{(d^{0})^{2}}
+  \Big]\dd t :
+  \label{eq:exact-diff}
+\end{equation}
+the whole difference is the \emph{tidal path distortion}. The cancellation claimed in the lemma is
+worth displaying in the variation--of--parameters bookkeeping: from \eqref{eq:releq},
+$\Delta\vec v_1=\frac{m_*}{m_1+m_*}[-\Delta\vec u+\int\vec g_2\,\dd t]$, while the relative
+velocity change itself is $\Delta\vec u=\int F_{\rm Kep}(\vec d)\,\dd t+\int\vec g_2\,\dd t$; the
+companion's direct impulse $\int\vec g_2\,\dd t$ thus drops out of $\Delta\vec v_1$ --- it belongs
+to the \emph{relative} velocity, not to the kick of body 1, which the companion never touches.
+(Bounding $\Delta\vec u-\Delta\vec u^{\,0}$ by the tidal distortion alone, while also carrying
+$\int\vec g_2$ additively, would double--count the direct impulse.)
 
-For the multiplicative error, set $\vec\xi=\vec d-\vec d^{\,0}$,
+To estimate \eqref{eq:exact-diff}, set $\vec\xi=\vec d-\vec d^{\,0}$,
 $\vec\xi(t_{\rm p})=\dot{\vec\xi}(t_{\rm p})=0$,
 $\ddot{\vec\xi}=\nabla F_{\rm Kep}(\vec d^{\,0})\cdot\vec\xi+\order{|\vec\xi|^2}+\vec g_2$. By
 Lemma~\ref{lem:kepler-reg} the Kepler transition matrices from $t_{\rm p}$ are bounded by
 $K(\lambda)$ in scaled units on both legs, so Duhamel and Gronwall give
 $|\vec\xi(t)|\le CK\,(Gm_2/q_2^2)\,(t-t_{\rm p})^2$ while $|\vec\xi|\ll|\vec d^{\,0}|$. Then, with
 $d(t)\simeq\max(\beta_1^*,V_1|t-t_{\rm p}|)$ and
-$|\Delta\vec u^{\,0}|\ge c(\lambda)\,\mu_1/(V_1\beta_1^*)$,
+$|\vec y_1^{\rm 2B}|\ge c(\lambda)/\beta_1^*$,
 \begin{equation}
-  \frac{|\Delta\vec u-\Delta\vec u^{\,0}|}{|\Delta\vec u^{\,0}|}
+  \frac{\big|\vec y_1-\vec y_1^{\rm 2B}\big|}{\big|\vec y_1^{\rm 2B}\big|}
   \;\le\;C\,\frac{V_1\beta_1^*}{\mu_1}\cdot
   \mu_1\!\int\frac{2\,|\vec\xi(t)|}{\min(d,d^0)^3}\,\dd t
   \;\le\;C K\,\frac{Gm_2\,\beta_1^*}{q^2V^2}\,\ln\frac{r}{\beta_1^*}
@@ -720,47 +935,51 @@ $|\Delta\vec u^{\,0}|\ge c(\lambda)\,\mu_1/(V_1\beta_1^*)$,
 the middle bound collecting the near zone $|t-t_{\rm p}|\le\rho/V$ (where the $t^2$--growth of
 $\vec\xi$ meets the $1/d^3$ decay of the tidal kernel in a logarithm) and the far legs (where the
 kernel decays and $\vec\xi$ grows at most quadratically in $d$ until the companion is passed); the
-last step uses $\beta_1^*\le\rho$, i.e.\ $\beta_1^*/r\le\sqrt\eta$, and $q\ge\rp/2$. This is
-stronger than the stated $|\epsilon_1|$ bound. On the sequential set the far--leg estimate fails
+last step uses $\beta_1^*\le\rho$, i.e.\ $\beta_1^*/r\le\sqrt\eta$, and $q\ge\rp/2$. On the
+sequential set the far--leg estimate fails
 (the true outgoing leg is re--scattered by body 2), which is why $S$ is excluded here and handled by
-measure in Lemma~\ref{lem:seq}. All estimates bound \emph{vector} differences, so they apply to the
-tensor $\vec y_1\otimes\vec y_1$ as well.
-
-Finally, the integrated effect of $\vec\Delta$ on the near--region self--energy: the square term is
-$\int_{\beta_1<\rho}|\vec\Delta|^2\le C\rho^2/(r\sin\theta)^2=\order{\eta/\sin^2\theta}$, and the
-cross term is bounded crudely by
-\begin{equation*}
-\int_{\beta_1<\rho}2\,|\vec y_1^{\rm 2B}|\,|\vec\Delta|\,\dd^2b
-\;\le\;\frac{C}{r\sin\theta}\int_0^\rho\frac{2\pi\beta\,\dd\beta}{\max(\beta,b_{90})}
-\;=\;\order{\sqrt\eta/\sin\theta}
-\end{equation*}
---- with an extra azimuthal cancellation (the direction of
-$\vec y_1^{\rm 2B}$ sweeps the circle while $\vec\Delta$ is fixed) that we do not need.
+measure in Lemma~\ref{lem:seq}; on $N$ the outgoing leg does not exist, which is why $N$ is excluded
+and handled by measure in Lemma~\ref{lem:nondisp}. All estimates bound \emph{vector} differences,
+so they apply to the tensor $\vec y_1\otimes\vec y_1$ as well.
 \end{proof}
+
+\begin{remark}[The direct impulse cancels: numerical confirmation]
+\label{rem:cancel}
+The cancellation of $\frac{m_*}{m_1+m_*}\int\vec g_2\,\dd t$ in \eqref{eq:exact-diff} is exact but
+easy to disbelieve, since the direct impulse is by far the largest effect of the companion on the
+\emph{perturber}. It is confirmed trajectory by trajectory in \texttt{deflection\_map\_check.py}
+(\S\ref{sec:numerics}): the measured $|\Delta\vec v_1-\Delta\vec v_1^{\rm 2B}|$ is two orders of
+magnitude below $|\frac{m_*}{m_1+m_*}\int\vec g_2\,\dd t|$ and scales as $\eta^{3/2}$, while the
+direct impulse scales as $\eta$ --- exactly the hierarchy of \eqref{eq:fidelity}.
+\end{remark}
 
 \subsection{Near--region self--energy}
 \label{sec:near-assembly}
 Fix a generic orientation and let $\lambda=\lambda(\eta)\to0$ slowly (specified below). Split
-$\{\beta_1^{\rm asym}<\rho\}$ into the annulus $\mathcal A_\lambda$ and the core. On the annulus,
-change variables $\bv\to\vec\beta_1^{\,*}$ (Lemma~\ref{lem:map}) and use Lemma~\ref{lem:fidelity}:
+$\{\beta_1^{\rm asym}<\rho\}$ into the annulus $\mathcal A_\lambda$ and the core. On the annulus
+(minus $S\cup N$), change variables $\bv\to\vec\beta_1^{\,*}$ (Lemma~\ref{lem:map}) and use
+Lemma~\ref{lem:fidelity}:
 \begin{equation}
 \begin{split}
   \int_{\mathcal A_\lambda}|\vec y_1|^2\,\dd^2b
   &=\!\!\int\limits_{\lambda b_{90,1}\lesssim\beta_1\lesssim\rho}\!\!
   \Big(\frac{V}{V_1^*}\Big)^{\!2}
   \frac{1+\order{\epsilon_1}}{\beta_1^2+b_{90,1}(V_1^*)^2}\,
-   \Big|\det\tfrac{\partial\bv}{\partial\vec\beta_1}\Big|\,\dd^2\beta_1
-   \;+\;(\vec\Delta\ \text{terms})\\
+   \Big|\det\tfrac{\partial\bv}{\partial\vec\beta_1}\Big|\,\dd^2\beta_1\\
   &=2\pi\ln\frac{\rho}{b_{90,1}}-\pi\ln(1+\lambda^2)+\mathcal E_{\rm ann},
 \end{split}
 \end{equation}
 with, by \eqref{eq:jac}--\eqref{eq:y2B} and \eqref{eq:fidelity},
 $|\mathcal E_{\rm ann}|\le C\,K(\lambda)\,\frac{\eta}{\sin^2\theta}\ln^2\frac1\eta$ (the relative
 errors --- Jacobian, speed prefactor, cutoff shift, $\epsilon_1$ --- multiply a logarithm)
-$+\;\order{\sqrt\eta/\sin\theta}$ (two contributions of the same size: the
+$+\;\order{\sqrt\eta/\sin\theta}$ (the
 $\order{\bnt/\sin\theta}$ mismatch between the asymptotic--$\bv$ annulus boundaries and the
 osculating--$\beta_1$ ones, an annulus of relative width $\bnt/(\rho\sin\theta)$ integrated against
-$\dd^2\beta_1/\beta_1^2$; and the additive $\vec\Delta$ cross term of Lemma~\ref{lem:fidelity}).
+$\dd^2\beta_1/\beta_1^2$)
+$+\;\order{\eta/\sin^2\theta}+\order{\sqrt\eta\,\ln^4(1/\eta)/\lambda^2}$ (the excised sets: on
+$S$ both the true and the closed--form weights are $\le C\!\sum_{\rm dyadic}s^2/[r^2\sin^2(\Theta_{\rm
+geo}/2)]=\order{\eta/\sin^2\theta}$ by the measure count of Lemma~\ref{lem:seq}; on $N$ the
+closed--form weight is $\le\mu(N)/(\lambda b_{90})^2$ by Lemma~\ref{lem:nondisp}).
 
 The core needs \emph{no} fidelity estimate: by the energy cap of Lemma~\ref{lem:cone}(i),
 $|\vec y_1|\le C/b_{90,1}$ there, while the preimage measure of the core disk is
@@ -774,19 +993,26 @@ $\order{\lambda^2}$, so replacing one by the other costs $\order{\lambda^2}$. Ad
   \boxed{\ \int_{\beta_1<\rho}|\vec y_1|^2\,\dd^2b=2\pi\ln\frac{\rho}{b_{90,1}}
   \;+\;\order{\lambda^2}
   \;+\;\order{K(\lambda)\,\tfrac{\eta}{\sin^2\theta}\ln^2\tfrac1\eta}
-  \;+\;\order{\tfrac{\sqrt\eta}{\sin\theta}}\ }
+  \;+\;\order{\tfrac{\sqrt\eta}{\sin\theta}}
+  \;+\;\order{\tfrac{\sqrt\eta}{\lambda^2}\ln^4\tfrac1\eta}\ }
   \label{eq:near-result}
 \end{equation}
-and likewise about body 2. With $K(\lambda)\le C\lambda^{-p}$ (Lemma~\ref{lem:kepler-reg}), the
+and likewise about body 2. With $K(\lambda)\le C\lambda^{-p}$, $p\ge2$
+(Lemma~\ref{lem:kepler-reg}; larger $p$ only weakens $K$, so $p\ge2$ costs no generality), the
 choice $\lambda=\eta^{(1-2\alpha)/(p+2)}$ balances the first two error terms on
 $\sin\theta\ge\eta^\alpha$ and makes the whole error
-$\order{\eta^{c_0}\ln^2(1/\eta)}$ with
-$c_0=\min\big\{\tfrac{2(1-2\alpha)}{p+2},\,\tfrac12-\alpha\big\}>0$; the literal
+$\order{\eta^{c_0}\ln^4(1/\eta)}$ with
+\begin{equation*}
+c_0=\min\Big\{\tfrac{2(1-2\alpha)}{p+2},\ \tfrac12-\alpha,\ \tfrac12-\tfrac{2(1-2\alpha)}{p+2}\Big\}>0
+\qquad(p\ge2);
+\end{equation*}
+the literal
 $b_{90,1}$ appears with unit coefficient and \emph{no additive constant survives}. Finally, the near
 disk's contribution to the full $|\vec y|^2$ differs from \eqref{eq:near-result} by the cross and
 self--2 pieces, bounded by Lemma~\ref{lem:harmonic} (plus the deviations $\vec y_a-\vec u_a$, which
 contribute $\order{\eta\ln(1/\eta)/\sin^2\theta}$ by the same fidelity estimates) and by
-Lemma~\ref{lem:seq}: all within the error already displayed. By Lemma~\ref{lem:iso} and the same
+Lemma~\ref{lem:seq} ($\eta^{3/2}/\sin^3\theta\le\sqrt\eta/\sin\theta$ there): all within the error
+already displayed. By Lemma~\ref{lem:iso} and the same
 error budget, the near disks contribute $0+\order{\text{same}}$ to the anisotropy $\Yp-\Ypa$.
 
 \section{The far region: straight lines, the upper scale, and the anisotropy}
@@ -806,8 +1032,14 @@ value
   \label{eq:y0}
 \end{equation}
 (the overall sign is opposite to $\vec y$ as defined from $\Delta\vec v_1-\Delta\vec v_2$;
-irrelevant for second moments) up to a relative error $\le c\,\bnt/\beta_{\min}\le c\sqrt\eta$,
-where $\beta_{\min}=\min(\beta_1,\beta_2)$; for $b\gg r$ the error of the \emph{dipole} is relative
+irrelevant for second moments) up to a relative error
+\begin{equation}
+  \le\;c\,\Big[\frac{\bnt}{\beta_{\min}}+\frac{\bnt\,r}{\beta_1\beta_2}\Big]
+  \;\le\;c\,\frac{\sqrt\eta}{\sin\theta}\,,
+  \label{eq:far-error}
+\end{equation}
+where $\beta_{\min}=\min(\beta_1,\beta_2)$ (the last step uses $\beta_1+\beta_2\ge\rp$, so
+$\beta_{\max}\ge\rp/2$); for $b\gg r$ the error of the \emph{dipole} is relative
 $\order{\bnt/r}$, since the $\order\bnt$ displacement of the trajectory shifts each monopole term
 coherently. Consequently
 \begin{align}
@@ -823,13 +1055,20 @@ where $D_a=\{\beta_a<\rho\}$ are the circular near disks.
 \end{lemma}
 
 \begin{proof}
-\emph{Error of the straight line.} A trajectory with $\beta_{\min}\ge\rho$ is deflected by total
+\emph{Error of the straight line.} Two mechanisms contribute. \emph{Local curvature:} a trajectory
+with $\beta_{\min}\ge\rho$ is deflected by total
 angle $\le 2\bnt/\beta_{\min}$ (sum of the two two--body deflections, each $\le b_{90,i}/\beta_i$),
-so its transverse excursion from the straight line is $\le c\,\bnt$ over the relevant arc and the
-kick differs from \eqref{eq:y0} by the stated relative $\order{\bnt/\beta_{\min}}$; at $b\gg r$ the
+so its transverse excursion from the straight line over the arc of the body--$a$ encounter is
+$\le c\,\bnt$, a relative error $\order{\bnt/\beta_{\min}}$ on the kick. \emph{Lever displacement:}
+the deflection $\simeq2b_{90,\bar a}/\beta_{\bar a}$ acquired at the \emph{other} body acts over
+the lever $\le r$ separating the two passages, displacing the trajectory at the body--$a$ encounter
+by $\le2b_{90,\bar a}\,r/\beta_{\bar a}$ and hence shifting the effective impact parameter there:
+a relative error $\le c\,\bnt r/(\beta_1\beta_2)$ on the body--$a$ monopole. Both are
+$\le c\sqrt\eta/\sin\theta$ because the projected bodies are $\rp$ apart, so $\beta_1,\beta_2$
+cannot both be small: $\beta_{\max}\ge\rp/2$. (At $b\gg r$ the
 excursion shifts both monopole terms by the same $\order\bnt$, so the dipole error is controlled by
 the field \emph{gradient}, one factor $\bnt/b$ better relative to each monopole, i.e.\ relative
-$\order{\bnt/r}$ on the dipole.
+$\order{\bnt/r}$ on the dipole.)
 
 \emph{Convergence.} For $b\gg r$, $\vec y^{(0)}$ is the gradient of a dipole,
 $|\vec y^{(0)}|=\order{r/b^2}$, so $\int(\vec y^{(0)})^2\,b\,\dd b=\order{\int r^2 b^{-3}\dd b}<\infty$:
@@ -884,17 +1123,17 @@ the auxiliary $\Lambda$ cancelling and \emph{no} additive constant remaining, wh
 
 The far region thus supplies (a) the upper scale $\rp$ of the logarithm and (b) the entire
 anisotropy $\Yp-\Ypa=2\pi$, both cutoff--independent, with straight--line accuracy
-$\order{\sqrt\eta}$ near the matching radius and $\order{\eta}$ in the dipole bulk.
+$\order{\sqrt\eta/\sin\theta}$ near the matching circles and $\order{\eta}$ in the dipole bulk.
 
 \section{Assembly: proof of Theorem~\ref{thm:main}}
 \label{sec:assemble}
 
-\subsection{The in--plane tensor and the error tally}
+\subsection{The trace, the anisotropy, and the error tally}
 \label{sec:tally}
 Fix a generic orientation. Add the two near results \eqref{eq:near-result} and the far trace
-\eqref{eq:far-trace}; the isotropic (trace) part is
+\eqref{eq:far-trace}; the trace \eqref{eq:trace-def} is
 \begin{equation}
-  \Yp+\Ypa
+  \mathcal T
   =\underbrace{2\pi\ln\frac{\rho}{b_{90,1}}+2\pi\ln\frac{\rho}{b_{90,2}}}_{\text{near }1,2}
    +\underbrace{2\pi\ln\frac{\rp^2}{\rho^2}}_{\text{far}}
    +\big[\text{errors}\big]
@@ -910,16 +1149,21 @@ core replacement (twice) & $\order{\lambda^2}=\order{\eta^{2(1-2\alpha)/(p+2)}}$
 map Jacobian, speed boost $(V/V_1)^2$, $b_{90}(V_1)$, kick fidelity &
 $\order{K(\lambda)\,\eta\ln^2(1/\eta)/\sin^2\theta}$\\[2pt]
 annulus/disk boundary mismatch & $\order{\sqrt\eta/\sin\theta}$\\[2pt]
-cross and self--2 contamination of the near disks & $\order{\eta\ln(1/\eta)/\sin^2\theta}$
-\ (Lemmas \ref{lem:harmonic}, \ref{lem:seq})\\[2pt]
-far--region straight--line error & $\order{\sqrt\eta}$\\[2pt]
+cross and self--2 contamination of the near disks & $\order{\eta\ln(1/\eta)/\sin^2\theta
++\eta^{3/2}/\sin^3\theta}$\ (Lemmas \ref{lem:harmonic}, \ref{lem:seq})\\[2pt]
+sequential and non--dispersing excisions & $\order{\eta/\sin^2\theta
++\sqrt\eta\,\ln^4(1/\eta)/\lambda^2}$\ (Lemmas \ref{lem:seq}, \ref{lem:nondisp})\\[2pt]
+far--region straight--line error & $\order{\sqrt\eta/\sin\theta}$\\[2pt]
 far--region excised--disk terms & $\order{\rho^2/\rp^2}=\order{\eta/\sin^2\theta}$
 \end{tabular}
 \end{center}
-With $K(\lambda)\le C\lambda^{-p}$ every entry is $\order{\eta^{c}}$ for some $c=c(\alpha,p)>0$,
-uniformly on $\sin\theta\ge\eta^\alpha$; this proves the first display of \eqref{eq:thm-inplane}.
+With $K(\lambda)\le C\lambda^{-p}$, $p\ge2$, every entry is $\order{\eta^{c}}$ for some
+$c=c(\alpha,p)>0$,
+uniformly on $\sin\theta\ge\eta^\alpha$ (for the fourth line note
+$\eta^{3/2}/\sin^3\theta\le\eta^{3(1/2-\alpha)}$); this proves the first display of
+\eqref{eq:thm-inplane}.
 For the anisotropy, the near regions contribute $0$ up to the same tally (Lemma~\ref{lem:iso} and
-\S\ref{sec:near-assembly}) and the far region gives $\Yp-\Ypa=2\pi+\order{\sqrt\eta}$
+\S\ref{sec:near-assembly}) and the far region gives $\Yp-\Ypa=2\pi+\order{\sqrt\eta/\sin\theta}$
 (Lemma~\ref{lem:far}); this proves the second display. \emph{Numerically} the whole correction is
 $\order\eta$ (\S\ref{sec:focusing}); the weaker proven rate is all the constants require.
 
@@ -960,9 +1204,10 @@ $Gm/(r\sigma^2)\to0$.
 \end{lemma}
 
 \begin{proof}
-Energy conservation gives the uniform cap $|\Delta\vec v|\le C V$ (proof of
-Lemma~\ref{lem:cone}(i)). For $b\ge B\equiv C'\bnt(V)+2r$ the angular--momentum argument of
-Lemma~\ref{lem:cone}(ii) keeps the pericenter above $b/2$, and the tidal--dipole estimate gives
+Energy conservation on the dispersing set gives the uniform cap $|\Delta\vec v|\le C V$ (proof of
+Lemma~\ref{lem:cone}(i)). For $b\ge B\equiv C'\bnt(V)+2r$ the exit--map estimate of
+Lemma~\ref{lem:cone}(ii) ($g(\beta)\ge\beta[1-2b_{90}r/\beta^2]\ge\beta/2$ there, uniformly in
+$V$) keeps the pericenter above $b/4$, and the tidal--dipole estimate gives
 $|\Delta\vec v|\le CGm_*r/(Vb^2)$, so $\int_{b>B}|\Delta v|^2\dd^2b\le CG^2m_*^2r^2/(V^2B^2)$; for
 $b<B$ use the cap: $\int_{b<B}\le CV^2B^2$. Hence, for $V\le V_c$,
 \begin{equation*}
@@ -990,7 +1235,8 @@ soft--core $\sqrt e$); (ii) the intermediate scale $\rho$ cancels in \eqref{eq:a
 no scheme scale intrudes; (iii) the anisotropy $2\pi$ is the value of a convergent integral,
 independent of any cutoff --- provided the excisions are circular, which the decomposition
 guarantees and the deflection map preserves to $\order\eta$. A different multiplicative choice
-$b_{90,i}\to\alpha b_{90,i}$ would shift $\Yp+\Ypa$ by the \emph{constant} $-2\pi\ln(\alpha^2)$ and
+$b_{90,i}\to\alpha b_{90,i}$ would shift the trace $\mathcal T$ by the \emph{constant}
+$-2\pi\ln(\alpha^2)$ and
 hence $Q_{r,t}$ by $-\tfrac{8\pi}{3}C_Q\ln\alpha^2\ne0$; the proof leaves no room for such a shift,
 and the numerics of \S\ref{sec:focusing} exclude it directly.
 
@@ -1047,13 +1293,24 @@ halving as $\eta$ halves, positive, extrapolating to zero with no constant offse
 cutoff shift $\bnt\to\alpha\bnt$ would instead drive this ratio to the nonzero $-\ln\alpha^2$; it
 does not.
 
-\texttt{deflection\_map\_check.py} (new) tests the \emph{ingredients} of
-Lemmas~\ref{lem:map}--\ref{lem:fidelity} directly, trajectory by trajectory: (i) the pinned model
+\texttt{deflection\_map\_check.py} tests the \emph{ingredients} of the proof directly, trajectory
+by trajectory: (i) the pinned model
 yields the cutoff $Gm_i/V^2$ and the recoil model $G(m_i+m_*)/V^2$ (Remark~\ref{rem:pinned});
 (ii) the displacement $|\vec\delta|$ is $\order\bnt$ and $r$--independent; (iii) the \emph{vector}
 Jacobian satisfies $\det(\partial\vec\beta_1^{\,*}/\partial\bv)-1=\order\eta$, halving with $\eta$;
 (iv) the kick fidelity \eqref{eq:fidelity}--\eqref{eq:y2B} holds with a small error shrinking with
-$\eta$, and fails if either the $(V/V_1^*)^2$ prefactor or the $b_{90,1}(V_1^*)$ shift is dropped.
+$\eta$, and fails if either the $(V/V_1^*)^2$ prefactor or the $b_{90,1}(V_1^*)$ shift is dropped;
+(v) the exact cancellation of the companion's direct impulse (Remark~\ref{rem:cancel}):
+$|\Delta\vec v_1-\Delta\vec v_1^{\rm 2B}|$ is measured at a few percent of
+$|\frac{m_*}{m_1+m_*}\int\vec g_2\,\dd t|$ and falls $\propto\sqrt\eta$ relative to it (absolutely
+$\propto\eta^{3/2}$, against the direct impulse's $\eta$), whereas subtracting the direct impulse
+as if it were present leaves a residual of the full $\order\eta$ size --- the decomposition
+\eqref{eq:fidelity} with an additive $\int\vec g_2$ term would fail;
+(vi) the lensing caustic of Lemma~\ref{lem:cone}: in the aligned configuration at $r=200\,b_{90}$,
+a trajectory launched at $\beta\simeq\beta_E=\sqrt{2Gm_2r}/V\simeq14\,b_{90}$ from the axis scores
+a \emph{direct hit} on the downstream body (pericenter $<10^{-2}\,b_{90}$), with
+$|\dd p/\dd\beta|=\order 1$ across the ring --- the annulus measure $\simeq2\pi\beta_E\,s$ of
+\eqref{eq:cone-measure}, which no $\order{s^2}$ bound can accommodate.
 
 \section{What is proved, and what is not}
 \label{sec:summary}
@@ -1063,14 +1320,21 @@ $\eta$, and fails if either the $(V/V_1^*)^2$ prefactor or the $b_{90,1}(V_1^*)$
 \eqref{eq:self}: the close--encounter divergence is cut off at the \emph{bare} $b_{90,i}$ with zero
 additive constant, the soft--core ``$\sqrt e$'' being cancelled by the longitudinal recoil
 (Lemmas~\ref{lem:kick}--\ref{lem:self}); the recoil of the struck body is essential
-(Remark~\ref{rem:pinned}). (2) The longitudinal recoil never enters the anisotropy
-(Lemma~\ref{lem:iso}). (3) The near--region reduction to the two--body problem, with the deflection
-map and the kick fidelity now proven (Lemmas~\ref{lem:map}--\ref{lem:fidelity}), the core handled by
+(Remark~\ref{rem:pinned}). (2) The longitudinal recoil never enters the anisotropy, and the split of the trace between
+in--plane and longitudinal components is invisible to $Q_r,Q_t$
+(Lemma~\ref{lem:iso}, Remark~\ref{rem:trace}). (3) The near--region reduction to the two--body
+problem, with the deflection
+map and the kick fidelity proven (Lemmas~\ref{lem:map}--\ref{lem:fidelity}) --- including the exact
+cancellation of the companion's direct impulse in each body's kick (Remark~\ref{rem:cancel}) ---
+the core handled by
 measure, the near--disk contamination handled by the harmonicity cancellation
 (Lemma~\ref{lem:harmonic}) and the sequential--encounter measure estimate (Lemma~\ref{lem:seq}).
-(4) The far region gives the upper scale $\rp$ and the cutoff--free anisotropy $2\pi$ at
+(4) The all--orientation exit--map measure estimate, including the Einstein--radius caustic at
+near--aligned orientations (Lemma~\ref{lem:cone}), and the dispersal estimate that excises the
+exchange--capture set (Lemma~\ref{lem:nondisp}).
+(5) The far region gives the upper scale $\rp$ and the cutoff--free anisotropy $2\pi$ at
 straight--line accuracy, with the conditional--convergence subtlety of the self terms resolved by
-the circularity of the excisions (Lemma~\ref{lem:far}). (5) On assembly the intermediate scale
+the circularity of the excisions (Lemma~\ref{lem:far}). (6) On assembly the intermediate scale
 cancels and the closed form \eqref{eq:claim-inplane}--\eqref{eq:claim-QrQt}, constants included, is
 the exact limit, including the speed average (Lemma~\ref{lem:tail}); the $\theta$-- and
 speed--averages are exact elementary integrals.
@@ -1080,10 +1344,12 @@ The dynamical estimates of Lemmas~\ref{lem:map}--\ref{lem:fidelity} rest on the 
 regularity of the incoming leg of the Kepler flow (Lemma~\ref{lem:kepler-reg},
 Appendix~\ref{app:kepler}): boundedness, uniform on $\beta\ge\lambda b_{90}$, of the first
 derivatives of the flow and of the osculating--element coefficients, with constants
-$K(\lambda)\le C\lambda^{-p}$. This is elementary (the flow is given by explicit conic formulas)
-and we indicate the computation; the constants are not optimized, and the final error rate
-$\order{\eta^{c}}$ inherits this non--optimality. The numerics indicate the true rate is
-$\order\eta$.
+$K(\lambda)\le C\lambda^{-p}$. The proof there is elementary calculus on explicit conic formulas;
+the constants are not optimized, and the final error rate
+$\order{\eta^{c}}$ inherits this non--optimality. Likewise, the multi--pass channel bookkeeping in
+Lemma~\ref{lem:nondisp} is deliberately crude: only smallness far below the working accuracy is
+required of it, and the bound proved has a factor $\eta^{1/2}$ to spare. The numerics indicate the
+true rate of the surviving correction is $\order\eta$.
 
 \paragraph{Established only numerically.}
 The sharp $\order\eta$ rate of the surviving correction, its positivity in the tested
@@ -1125,22 +1391,53 @@ state, are bounded by $K(\lambda)$ times the appropriate dimensional scale
 \end{enumerate}
 \end{lemma}
 
-\begin{proof}[Proof sketch]
-The orbit is given explicitly by the hyperbolic--anomaly parametrization
-$d=a(e\cosh H-1)$, $t\sqrt{\mu/a^3}=e\sinh H-H$, with $a=\mu/v^2=b$ and
-$e=\sqrt{1+\beta^2/b^2}\ge\sqrt{1+\lambda^2}$, together with the standard in--plane position and
-velocity formulas; the asymptotic data enter through $(e,a)$ and the orientation of the apse frame.
-Every map in the statement is a composition of these explicit algebraic/analytic functions and the
-inverse of the (strictly monotone) Kepler equation. Their derivatives are rational expressions in
-$(e,\cosh H,\sinh H)$ whose denominators are powers of $e\cosh H-1\ge e-1\ge c\lambda^2$; sup over
-$H$ is finite because every expression tends, as $|H|\to\infty$, to its free--motion limit (the
-force decays as $d^{-2}$, integrably), and smooth dependence on $1/e$ up to the straight--line
-point $1/e=0$ makes the family compact. Tracking the worst denominator gives
-$K(\lambda)\le C\lambda^{-p}$ with $p$ finite; we make no attempt to optimize $p$. For (3), the
-element coefficients are polynomial in $(\vec d,\vec u)$ divided by powers of $V_1=\sqrt{2E}$,
-$|\vec A|=\mu e$ and $\sqrt{e^2-1}=\beta/b$, bounded below on the incoming leg by $c\,v$, $\mu$ and
-$\lambda$ respectively; the degenerating denominators are the powers of $e-1\ge c\lambda^2$ already
-counted above.
+\begin{proof}
+\emph{(a) The flow as a composition of explicit maps.} In units $b=1$, $v=1$ ($\mu=1$), the
+asymptotic data determine $a=1$ and $e=\sqrt{1+\beta^2}\ge\sqrt{1+\lambda^2}$, and the orbit is
+the hyperbolic--anomaly parametrization
+\begin{equation}
+  d=e\cosh H-1,\qquad
+  (x,y)=\big(e-\cosh H,\ \sqrt{e^2-1}\,\sinh H\big),\qquad
+  (\dot x,\dot y)=\frac{(-\sinh H,\ \sqrt{e^2-1}\cosh H)}{e\cosh H-1},
+  \label{eq:kepler-flow}
+\end{equation}
+in the apse frame ($x$ along $\hat p$, pericenter at $H=0$), with the time of flight
+$t(H)=e\sinh H-H$ from pericenter. The apse frame itself is an explicit rotation of the asymptotic
+frame by the angle $\arccos(-1/e)$ about $\hat L$. Every map in the statement is a composition of
+(i) $(\vec\beta,v\hat u)\mapsto(e,\hat p,\hat q)$, explicit and smooth with all first derivatives
+bounded by $C/\lambda$ on $\beta\ge\lambda$ (the only denominators are $\beta=\sqrt{e^2-1}$ and
+$e$); (ii) the formulas \eqref{eq:kepler-flow}; and (iii) the inverse of the Kepler equation
+$H(t)$.
+
+\emph{(b) Inverse of the Kepler equation.} $t(H)$ is smooth and strictly increasing with
+$t'(H)=e\cosh H-1\ge e-1\ge c\lambda^2$, so $H(t)$ is globally smooth with $|H'(t)|\le C\lambda^{-2}$,
+and each further derivative of $H(t)$, and each partial of $H$ with respect to $e$ at fixed $t$, is
+an explicit rational expression in $(e,\cosh H,\sinh H)$ whose denominator is a power of
+$e\cosh H-1\ge\max(e-1,\,c\,e\,{\rm e}^{|H|-1}-1)$.
+
+\emph{(c) Uniform boundedness.} By the chain rule, every first derivative appearing in (1)--(2) is
+a finite sum of products of explicit rational--algebraic expressions in $(e,\cosh H,\sinh H)$
+divided by powers of the three quantities that can degenerate: $e-1\ge c\lambda^2$,
+$\sqrt{e^2-1}\ge\lambda$, and $e\cosh H-1\ge e-1$. For fixed $e$, each expression has a finite
+limit as $|H|\to\infty$, approached at rate $\order{1/\cosh H}$: the flow straightens to free
+motion because the force decays as $d^{-2}$, integrably along the leg, and the same holds for the
+variational (Jacobi) flow, whose fundamental solutions are explicit derivatives of
+\eqref{eq:kepler-flow} with respect to $(e,H_0)$. Each expression is moreover jointly continuous in
+$(1/e,H)$ up to the straight--line boundary $1/e=0$. Hence
+$\sup_H$ is a continuous function of $e$ on the compactified interval
+$e\in[\sqrt{1+\lambda^2},\infty]$, and the overall supremum is finite and bounded by
+$C\lambda^{-p}$ with $p$ equal to twice the largest power of $(e-1)$ occurring in any denominator
+--- a crude count through \eqref{eq:kepler-flow} and (b) gives $p\le8$; only finiteness and
+polynomial growth in $\lambda^{-1}$ are used in the text, and any $p\ge2$ serves.
+
+\emph{(d) The element coefficients (3).} The coefficients $\partial X/\partial\vec u$ are
+polynomial in $(\vec d,\vec u)$ divided by powers of $V_1=\sqrt{2E}$,
+$|\vec A|=\mu e$ and $\sqrt{e^2-1}$, bounded below on the incoming leg by $c\,v$, $\mu$ and
+$\lambda$ respectively; their state derivatives add one more power of the same denominators. The
+lever--type entries ($\partial\vec\beta/\partial\vec u$, $\partial\vec L/\partial\vec u$) carry the
+explicit factor $|\vec d|/v$ displayed in the statement; after removing it, the remaining
+expressions are bounded exactly as in (c), with the degenerating denominators the powers of
+$e-1\ge c\lambda^2$ already counted.
 \end{proof}
 
 \begin{thebibliography}{9}

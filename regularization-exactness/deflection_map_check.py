@@ -30,6 +30,20 @@ per-trajectory ingredients directly:
      with eps -> 0 as eta -> 0.  We also show that using the asymptotic V instead of
      V1* (i.e. dropping the (V/V1*)^2 prefactor and the b90(V1*) shift) fits WORSE.
 
+  4. THE DIRECT IMPULSE CANCELS (Lemma "Kick fidelity", exact identity): the companion's
+     direct impulse on the perturber, A = (m*/(m1+m*)) \int g2 dt, does NOT appear in the
+     body-1 kick:  dv1 - dv1_2B is the tidal path distortion alone, of relative size
+     O(eta^{3/2}), while |A| = O(eta).  We measure |dv1 - dv1_2B| << |A| (ratio ~ sqrt(eta)),
+     and show that SUBTRACTING A (as if it were present) leaves a residual of the full |A|
+     size -- i.e. a decomposition dv1 = dv1_2B(1+eps) + A would be wrong.
+
+  5. LENSING CAUSTIC (Lemma "All orientations: exit-map measure estimate"): with the binary
+     aligned along V, the upstream body is a gravitational lens with Einstein radius
+     bE = sqrt(2 G m2 r / V^2) = O(sqrt(b90 r)).  An annulus of asymptotic impact parameters
+     at bE focuses onto the downstream body: we scan beta and find a direct hit
+     (pericenter ~ 0) at beta ~ bE >> b90, with |d peri/d beta| = O(1) across the ring.
+     Hence mu{pericenter <= s} ~ 2 pi bE s there, the caustic term of the measure estimate.
+
 G = m* = 1 throughout.
 """
 import sys, time
@@ -228,5 +242,145 @@ for tag in ['radial', 'tangential']:
 print(f"  osculating eps shrinks with eta and beats the asymptotic-V fit: {PASS(ok_fid)}")
 print("  => the exact kick IS the two-body kick at the osculating (beta1*, V1*), incl. the")
 print("     (V/V1*)^2 prefactor and the b90(V1*) shift; corrections vanish in the limit.")
+sys.stdout.flush()
+
+# --------------------------------------------------------------------------------------
+def encounter_extra(bvec, Vhat, V, s1, s2, m1, m2, Lfac, rtol=1e-11, atol=1e-13,
+                    track_min1=False):
+    """Frozen-binary 3-body encounter with two extras needed by Sections 4-5:
+    the quadrature J2 = int g2 dt (companion's direct pull on the relative coordinate)
+    and, optionally, the minimum distance to body 1 along the whole trajectory.
+    Also returns the ANALYTIC isolated-2B kick vector at the osculating pericenter
+    elements: dv1_2B = (2 G m* V1 / (mu1 e)) p_hat  (p_hat = unit Laplace-Runge-Lenz),
+    which avoids any truncation error in the reference kick."""
+    r = np.linalg.norm(s2 - s1); L = Lfac * r
+    x0 = bvec - L * Vhat
+    y0 = np.concatenate([x0, s1, s2, V*Vhat, np.zeros(3), np.zeros(3), np.zeros(3)])
+    tend = 2.4 * L / V
+    def rhs(t, y):
+        xs = y[0:3]; x1 = y[3:6]; x2 = y[6:9]
+        d1 = xs - x1; d2 = xs - x2
+        r13 = (d1 @ d1) ** 1.5; r23 = (d2 @ d2) ** 1.5
+        a_star = -G*m1*d1/r13 - G*m2*d2/r23
+        a1 = G*mstar*d1/r13; a2 = G*mstar*d2/r23
+        g2 = -G*m2*d2/r23
+        return np.concatenate([y[9:12], y[12:15], y[15:18], a_star, a1, a2, g2])
+    def ca1(t, y):
+        d = y[0:3] - y[3:6]; u = y[9:12] - y[12:15]
+        return d @ u
+    ca1.direction = 1.0
+    sol = solve_ivp(rhs, [0.0, tend], y0, method='DOP853', rtol=rtol, atol=atol,
+                    events=ca1, dense_output=track_min1)
+    res = dict(dv1=sol.y[12:15, -1], dv2=sol.y[15:18, -1], J2=sol.y[18:21, -1])
+    ye = sol.y_events[0]
+    if len(ye) > 0:
+        seps = [np.linalg.norm(y[0:3] - y[3:6]) for y in ye]
+        k = int(np.argmin(seps)); y = ye[k]
+        d = y[0:3] - y[3:6]; u = y[9:12] - y[12:15]
+        mu1 = G * (m1 + mstar)
+        E = 0.5*(u @ u) - mu1/np.linalg.norm(d)
+        V1 = np.sqrt(2.0*E)
+        Lv = np.cross(d, u)
+        Av = np.cross(u, Lv) - mu1*d/np.linalg.norm(d)
+        e = np.linalg.norm(Av)/mu1
+        phat = Av/np.linalg.norm(Av)
+        res.update(V1=V1, e=e, peri=min(seps),
+                   dv1_2B=(2.0*G*mstar*V1/(mu1*e))*phat)
+    if track_min1:
+        ts = np.linspace(0.0, sol.t[-1], 4000)
+        Z = sol.sol(ts)
+        dmin = np.min(np.linalg.norm(Z[0:3] - Z[3:6], axis=0))
+        res['mind1'] = min(dmin, res.get('peri', np.inf))
+    return res
+
+print("\n"+"="*88)
+print("SECTION 4 -- the companion's direct impulse CANCELS in the body-1 kick")
+print("             [Lemma 'Kick fidelity', exact identity]")
+print("  D1 := dv1 - dv1_2B (measured)   A := (m*/(m1+m*)) int g2 dt (the direct impulse)")
+print("  exact identity => |D1| << |A| (D1 is the tidal path distortion, O(eta^{3/2}) vs")
+print("  A = O(eta)); a decomposition carrying A additively would instead give |D1-A| << |A|.")
+print("="*88)
+m1 = m2 = 1.0; V = 6.0
+b90 = G*(m1+mstar)/V**2
+bnt = G*(m1+m2+mstar)/V**2
+Vhat = np.array([1., 0., 0.])
+print(f"  {'eta':>7} {'offset':>11} | {'|A|':>9} {'|D1|':>10} | {'|D1|/|A|':>9} {'|D1-A|/|A|':>11}")
+t0 = time.time()
+ratios_DA = {'radial': [], 'tangential': []}
+ok4 = True
+for eta in [0.04, 0.02, 0.01, 0.005]:
+    r = bnt/eta
+    s1 = np.array([0., 0., -0.5*r]); s2 = np.array([0., 0., 0.5*r])
+    for tag, off in [('radial', np.array([0., 0., 1.])),
+                     ('tangential', np.array([0., 1., 0.]))]:
+        bvec = s1 + 3.0*b90*off
+        bvec = bvec - (bvec @ Vhat)*Vhat
+        d = encounter_extra(bvec, Vhat, V, s1, s2, m1, m2, Lfac=400.0)
+        A = (mstar/(m1+mstar))*d['J2']
+        D1 = d['dv1'] - d['dv1_2B']
+        nA = np.linalg.norm(A); nD = np.linalg.norm(D1)
+        nDA = np.linalg.norm(D1 - A)
+        ratios_DA[tag].append(nD/nA)
+        ok4 &= nDA/nA > 0.8                      # subtracting A leaves the full |A|
+        print(f"  {eta:7.3f} {tag:>11} | {nA:9.6f} {nD:10.6f} | {nD/nA:9.4f} {nDA/nA:11.4f}")
+    sys.stdout.flush()
+for tag in ['radial', 'tangential']:
+    rr = ratios_DA[tag]
+    ok4 &= all(rr[i] > rr[i+1] for i in range(len(rr)-1)) and rr[-1] < 0.02
+print(f"  |D1|/|A| falls monotonically (~sqrt(eta)) and |D1-A| stays ~|A|: {PASS(ok4)}")
+print("  => the direct impulse is absent from the kick: the companion acts on dv1 only")
+print("     through the relabeling (beta1*, V1*) and the O(eta^{3/2}) tidal distortion.")
+print(f"  (elapsed {time.time()-t0:.0f}s)")
+sys.stdout.flush()
+
+# --------------------------------------------------------------------------------------
+print("\n"+"="*88)
+print("SECTION 5 -- lensing caustic at the Einstein radius (aligned binary)")
+print("             [Lemma 'All orientations: exit-map measure estimate']")
+print("  Bodies aligned with V, body 2 upstream, body 1 a distance r downstream.")
+print("  Scan asymptotic beta: pericenter w.r.t. body 1 must dip to ~0 at")
+print("  beta ~ bE = sqrt(2 G m2 r/V^2) >> b90, with O(1) slope across the ring.")
+print("="*88)
+m1 = m2 = 1.0; V = 6.0
+b90 = G*(m1+mstar)/V**2
+r = 200.0*b90
+bE = np.sqrt(2.0*G*m2*r/V**2)
+s2 = np.array([0., 0., 0.]); s1 = np.array([0., 0., r])      # body 2 met FIRST
+Vhat = np.array([0., 0., 1.])
+print(f"  r = 200 b90:  bE = {bE/b90:.1f} b90")
+t0 = time.time()
+grid = np.linspace(0.8*bE, 1.3*bE, 11)
+peris = []
+for beta in grid:
+    d = encounter_extra(np.array([beta, 0., 0.]), Vhat, V, s1, s2, m1, m2,
+                        Lfac=40.0, rtol=1e-10, track_min1=True)
+    peris.append(d['mind1'])
+    print(f"    beta = {beta/b90:6.2f} b90   min dist to body 1 = {d['mind1']/b90:8.3f} b90")
+    sys.stdout.flush()
+k = int(np.argmin(peris))
+lo, hi = grid[max(k-1, 0)], grid[min(k+1, len(grid)-1)]
+for _ in range(14):
+    mids = np.linspace(lo, hi, 5)
+    vals = [encounter_extra(np.array([b, 0., 0.]), Vhat, V, s1, s2, m1, m2,
+                            Lfac=40.0, rtol=1e-10, track_min1=True)['mind1'] for b in mids]
+    j = int(np.argmin(vals))
+    lo, hi = mids[max(j-1, 0)], mids[min(j+1, len(mids)-1)]
+    if (hi - lo) < 1e-3*b90:
+        break
+beta_star = 0.5*(lo + hi)
+p_star = encounter_extra(np.array([beta_star, 0., 0.]), Vhat, V, s1, s2, m1, m2,
+                         Lfac=40.0, rtol=1e-10, track_min1=True)['mind1']
+h = 0.5*b90
+p_off = encounter_extra(np.array([beta_star + h, 0., 0.]), Vhat, V, s1, s2, m1, m2,
+                        Lfac=40.0, rtol=1e-10, track_min1=True)['mind1']
+slope = abs(p_off - p_star)/h
+ok5 = (p_star < 0.05*b90) and (0.75 < beta_star/bE < 1.25) and (0.2 < slope < 5.0)
+print(f"\n  caustic: beta* = {beta_star/b90:.2f} b90 = {beta_star/bE:.3f} bE,"
+      f"  pericenter(body 1) = {p_star/b90:.4f} b90,  |d peri/d beta| ~ {slope:.2f}")
+print(f"  direct hit at beta ~ bE >> b90 with O(1) slope: {PASS(ok5)}")
+print("  => mu{pericenter <= s} ~ 2 pi bE s / slope on the ring: the caustic term of the")
+print("     measure estimate; no O(s^2) bound can hold near alignment.  Only the O(eta)")
+print("     solid angle of aligned orientations keeps this out of the theta-averages.")
+print(f"  (elapsed {time.time()-t0:.0f}s)")
 
 print("\nDone.")
