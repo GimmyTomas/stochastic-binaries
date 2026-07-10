@@ -13,6 +13,10 @@ profile -- and provides ready-to-evaluate drift and diffusion coefficients
 for all six orbital elements. This repository lets you **verify every
 analytical result and reproduce every numerical figure** of the paper.
 
+> **Note.** The entire contents of this repository were compiled by
+> [Claude](https://www.anthropic.com/claude) (Anthropic) starting from the
+> information and results in the paper.
+
 ## Contents
 
 | directory | contents |
