@@ -1,6 +1,6 @@
 """Isotropic correlator tensors and contraction helpers.
 
-Tidal case (eqn:TD-tidal): the integrated correlator is
+Tidal case (eqn:Td-tidal): the integrated correlator is
 
     Int <T_ij T_kl> dtau = (G m / (a^3 T_d)) * ONE_ijkl / 15 ,
     ONE_ijkl = delta_ij delta_kl + delta_ik delta_jl + delta_il delta_jk .

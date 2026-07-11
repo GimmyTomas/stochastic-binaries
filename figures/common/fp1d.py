@@ -1,5 +1,5 @@
 """1D Fokker--Planck solver for the adiabatic tidal eccentricity problem
-(eqn:fp-e-long).
+(eqn:fp-e-adiabatic).
 
 With g = f/(2e) and z = e^2 the equation becomes the manifestly regular
 divergence form

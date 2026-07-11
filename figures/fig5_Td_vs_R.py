@@ -1,4 +1,4 @@
-"""Figure 5 (fig:Td(R)): diffusion time T_d (eqn:TD-impulsive), normalized by
+"""Figure 5 (fig:Td(R)): diffusion time T_d (eqn:Td-impulsive), normalized by
 T_d^* (eqn:Td*), for impulsive encounters with GAUSSIAN perturbers of size R,
 as a function of R/a and for eccentricities e = 0 and 0.9.
 

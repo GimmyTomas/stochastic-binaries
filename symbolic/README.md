@@ -25,16 +25,16 @@ python run_all.py --fast   # skips the three heaviest scripts, ~4 min
 | `check_form_factors.py` | Table I: mass norms, I(b), rho~(k), and the Hankel relation eqn:rho(k), for all four extended profiles | 30 s |
 | `check_steady_states.py` | thermal 2e, f_0 = sqrt(a) e, f_ss with the 36/35 exponent (incl. uniqueness), sub-thermal point-mass f_ss, Penarrubia ratios 5/3 and (2+e^2)/(2-e^2), B^J = D^JJ/2J, e->0/1 limits | 40 s |
 | `check_kick_covariance.py` | Maxwellian moments incl. <V^-1 log V^4>, the Y_perp -/+ Y_par integrals (point-mass, Gaussian-regulated, b90-regulated), the exact -2/3 and -8/3 constants of Q_r, Q_t, Parseval consistency | 2 min |
-| `check_tidal_adiabatic.py` | sec:longcoherence: all coefficients in (a,e), (E,J), Euler angles (App. B) and the body frame; rotation-invariance lemmas | 40 s |
-| `check_tidal_whitenoise.py` | sec:shortcoherence: same four parametrizations; (E,J) also via the first-principles route of App. C; guard test proving the fixed-phase dE/de, dE/dM0 terms (eqn:dEdedM0) are essential; e->0 degeneracy of the (Jhat, M0) block | 1 min |
-| `check_tidal_traceless_gw.py` | sec:blas: the traceless-correlator coefficients AND the claim that all others are unchanged | 3 min |
+| `check_tidal_adiabatic.py` | sec:adiabatic: all coefficients in (a,e), (E,J), Euler angles (App. B) and the body frame; rotation-invariance lemmas | 40 s |
+| `check_tidal_whitenoise.py` | sec:white-noise: same four parametrizations; (E,J) also via the first-principles route of App. C; guard test proving the fixed-phase dE/de, dE/dM0 terms (eqn:dEdedM0) are essential; e->0 degeneracy of the (Jhat, M0) block | 1 min |
+| `check_tidal_traceless_gw.py` | sec:lit-gw-background: the traceless-correlator coefficients AND the claim that all others are unchanged | 3 min |
 | `check_impulsive_general.py` | eqn:Ba-impulsive .. eqn:DM0M0-impulsive as exact functionals of generic Q_r(r), Q_t(r); derives the Euler-angle sector **not** in the paper -> `output/impulsive-euler-coefficients.tex` | 40 s |
 | `check_impulsive_tidal_limit.py` | sec:large-perturbers: Q = A r^2 (3,1,1) reproduces ALL white-noise tidal coefficients; eqn:Td-large; the independent P_rho route eqn:Td-Prho | 40 s |
 | `check_impulsive_point_mass.py` | sec:point-mass: all ten closed forms, the (E,J) block, logLambda (eqn:logLambda), the T_d <-> T_d^* relation (eqn:Td*), limits, leading logs | 4 min |
 
 ## How it works (`sbx/` package)
 
-* `averaging.py` — orbit averages (eqn:orbit_average) are evaluated by
+* `averaging.py` — orbit averages (eqn:orbit-average) are evaluated by
   table lookup: every expression is reduced to monomials
   `cos^c E sin^s E (1-e cos E)^q [log(1-e cos E)]`, whose averages have exact
   closed forms (Wallis integrals, a derivative recursion for negative powers,
@@ -43,7 +43,7 @@ python run_all.py --fast   # skips the three heaviest scripts, ~4 min
 * `anomalies.py` — the fixed-fast-phase derivative (eqn:dEdedM0), the single
   chokepoint through which all drift computations go.
 * `gauss.py`, `correlators.py`, `frames.py`, `ito.py` — Gauss's equations,
-  the isotropic correlator contractions, body-frame transforms (eqn:Matrix),
+  the isotropic correlator contractions, body-frame transforms (eqn:change-of-basis-matrix),
   and the Ito change of variables (eqn:B-transform / eqn:D-transform).
 * `targets.py` — every published expression, transcribed verbatim and keyed
   by its LaTeX `\label`.

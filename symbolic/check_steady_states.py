@@ -1,18 +1,18 @@
 """Steady-state distribution functions and literature comparisons.
 
 Verifies (pure algebra, fast):
-* adiabatic tidal (sec:longcoherence): the probability current
-  eqn:Je-long-coherence, its compact form, and that the thermal distribution
+* adiabatic tidal (sec:adiabatic): the probability current
+  eqn:Je-adiabatic, its compact form, and that the thermal distribution
   f_th = 2e (eqn:f-thermal) carries zero current;
-* white-noise tidal (sec:shortcoherence): the compact current forms
-  eqn:Ja-short / eqn:Je-short (with the T_d = (a0/a)^3 T_d0 scaling), the
+* white-noise tidal (sec:white-noise): the compact current forms
+  eqn:Ja-white-noise / eqn:Je-white-noise (with the T_d = (a0/a)^3 T_d0 scaling), the
   detailed-balance solution f_0 = C sqrt(a) e (eqn:f-zero-flux), and the
   constant-flux solution f_ss = C e / (a^4 (4+5e^2)^{36/35})
   (eqn:f-steady-state) -- including that the exponents 1/2, -4 and 36/35 are
   the unique values allowed;
 * impulsive point-mass (sec:point-mass): the sub-thermal quasi-stationary
   eccentricity distribution eqn:f-ss-point-mass to O(1/logLambda);
-* the Penarrubia comparison ratios (sec:penarrubia): with the isotropized
+* the Penarrubia comparison ratios (sec:lit-white-noise): with the isotropized
   kick tensor <Dv_i Dv_j> ~ r^2 delta_ij one gets B^E ratio 5/3, D^EE ratio
   (2+e^2)/(2-e^2), identical D^JJ, and B^J = D^JJ/(2J) != 0;
 * the e -> 0 / e -> 1 limits of the adiabatic orientation coefficients.
@@ -38,7 +38,7 @@ f = sp.Function("f")(e)
 # ---------------------------------------------------------------------------
 # Adiabatic: currents and the thermal distribution
 # ---------------------------------------------------------------------------
-print("Adiabatic tidal (eqn:Je-long-coherence, eqn:f-thermal):")
+print("Adiabatic tidal (eqn:Je-adiabatic, eqn:f-thermal):")
 Je_long = targets.ADIABATIC["B^e"] * f - sp.diff(targets.ADIABATIC["D^ee"] * f, e) / 2
 Je_compact = -sp.Rational(5, 24) / Td * e**3 * (1 - e**2) * sp.diff(f / e, e)
 assert_eq("J^e compact form", sp.expand(Je_long), sp.expand(Je_compact))
@@ -47,7 +47,7 @@ assert_eq("thermal f = 2e has zero current", Je_long.subs(f, 2 * e).doit(), 0)
 # ---------------------------------------------------------------------------
 # White-noise: currents, detailed balance, constant-flux steady state
 # ---------------------------------------------------------------------------
-print("White-noise tidal currents (eqn:Ja-short, eqn:Je-short):")
+print("White-noise tidal currents (eqn:Ja-white-noise, eqn:Je-white-noise):")
 # T_d depends on a: T_d = (a0/a)^3 T_d0. Work in units a0 = T_d0 = 1.
 invTd = a**3
 f2 = sp.Function("f")(a, e)
@@ -120,7 +120,7 @@ print(f"  (residual at O(1/logLambda): {sp.nsimplify(sp.simplify(resid_Lm1 * L),
       "nonzero, as expected for a perturbative solution)")
 
 # ---------------------------------------------------------------------------
-# Penarrubia comparison (sec:penarrubia)
+# Penarrubia comparison (sec:lit-white-noise)
 # ---------------------------------------------------------------------------
 print("Penarrubia comparison (isotropized kick tensor):")
 Q_ours_r, Q_ours_t = 3 * Aamp * r_of_E**2, Aamp * r_of_E**2

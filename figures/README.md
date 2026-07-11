@@ -6,12 +6,12 @@ PDF and the underlying data tables, and print quantitative gates.
 
 | script | paper figure | what it does | default runtime |
 |---|---|---|---|
-| `fig2_adiabatic_eccentricity.py` | Fig. 2 (`fig:f-long-coherence`) | 1D FP for e, adiabatic tidal; relaxation to the thermal 2e | seconds |
-| `fig3_whitenoise_ae.py` | Fig. 3 (`fig:f-short-coherence`) | 2D FP in (ln a, e^2), white-noise tidal coefficients, absorbing at large a; heatmaps + marginals + f_ss overlay | ~2 min |
+| `fig2_adiabatic_eccentricity.py` | Fig. 2 (`fig:f-adiabatic`) | 1D FP for e, adiabatic tidal; relaxation to the thermal 2e | seconds |
+| `fig3_whitenoise_ae.py` | Fig. 3 (`fig:f-white-noise`) | 2D FP in (ln a, e^2), white-noise tidal coefficients, absorbing at large a; heatmaps + marginals + f_ss overlay | ~2 min |
 | `fig4_pointmass_ae.py` | Fig. 4 (`fig:f-point-mass`) | same for point-mass impulsive encounters at logLambda = 25; sub-thermal f_ss | ~2 min |
 | `fig5_Td_vs_R.py` | Fig. 5 (`fig:Td(R)`) | T_d/T_d^* vs R/a for Gaussian perturbers (closed-form kernels); asserts the <9% tidal-limit claim | seconds |
-| `fig6_fp_vs_mc.py` | Fig. 6 (`fig:fp_vs_mc`) | vectorized Monte-Carlo of impulsive kicks (1e6 binaries/case) vs the Fokker--Planck solution, uniform-sphere perturbers (Ramirez et al. 2022 setup) | ~15 min |
-| `fig7_coefficient_convergence.py` | Fig. 7 (`fig:short-coherence-numerics`) | direct orbit integration in an Ornstein--Uhlenbeck tidal field; measured/predicted coefficient ratios (App. D) | ~30 min (cached) |
+| `fig6_fp_vs_mc.py` | Fig. 6 (`fig:fp-vs-mc`) | vectorized Monte-Carlo of impulsive kicks (1e6 binaries/case) vs the Fokker--Planck solution, uniform-sphere perturbers (Ramirez et al. 2022 setup) | ~15 min |
+| `fig7_coefficient_convergence.py` | Fig. 7 (`fig:white-noise-numerics`) | direct orbit integration in an Ornstein--Uhlenbeck tidal field; measured/predicted coefficient ratios (App. D) | ~30 min (cached) |
 
 Shared machinery in `common/`:
 

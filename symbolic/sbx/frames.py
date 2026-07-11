@@ -4,7 +4,7 @@ R0(Omega, i, omega) = Rz(Omega) Rx(i) Rz(omega) rotates the cartesian axes
 onto the orbital axes (ehat, qhat, Jhat).
 
 The Euler-angle rates map onto body-frame angular velocities through
-(eqn:Matrix)
+(eqn:change-of-basis-matrix)
 
     M^(ehat,qhat,Jhat)_(Omega,i,omega) = [[sin i sin omega,  cos omega, 0],
                                           [sin i cos omega, -sin omega, 0],
@@ -38,7 +38,7 @@ def R0(Omega=Om, i=inc, omega=om):
 
 
 def Mmat(i=inc, omega=om):
-    """Change-of-basis matrix of eqn:Matrix; rows (ehat,qhat,Jhat), cols (Omega,i,omega)."""
+    """Change-of-basis matrix of eqn:change-of-basis-matrix; rows (ehat,qhat,Jhat), cols (Omega,i,omega)."""
     return sp.Matrix([[sp.sin(i) * sp.sin(omega), sp.cos(omega), 0],
                       [sp.sin(i) * sp.cos(omega), -sp.sin(omega), 0],
                       [sp.cos(i), 0, 1]])

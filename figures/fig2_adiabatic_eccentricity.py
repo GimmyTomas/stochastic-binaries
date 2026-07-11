@@ -1,9 +1,9 @@
-"""Figure 2 (fig:f-long-coherence): relaxation of the eccentricity
+"""Figure 2 (fig:f-adiabatic): relaxation of the eccentricity
 distribution to the thermal law f_th = 2e under ADIABATIC tidal
-perturbations (sec:longcoherence).
+perturbations (sec:adiabatic).
 
-Solves the 1D Fokker--Planck equation eqn:fp-e-long with the coefficients
-B^e (eqn:Ba-long-coherence block) and D^ee, starting from
+Solves the 1D Fokker--Planck equation eqn:fp-e-adiabatic with the coefficients
+B^e (eqn:Ba-adiabatic block) and D^ee, starting from
 f(e, 0) ~ delta(e - 0.5), and plots f(e, t) at t/T_d = 0.1, 0.3, 1, 3
 together with the thermal distribution (eqn:f-thermal).
 
@@ -37,7 +37,7 @@ def main():
                                 snapshots=times + [10.0])
 
     # quantitative gate: at t = 10 T_d the distribution is thermal. The
-    # degenerate corner e -> 0 (mobility ~ e^4 in eqn:Je-long-coherence)
+    # degenerate corner e -> 0 (mobility ~ e^4 in eqn:Je-adiabatic)
     # relaxes arbitrarily slowly, so gate away from it.
     mask = e > 0.2
     dev = np.abs(sols[10.0] - 2 * e)[mask].max()

@@ -101,10 +101,10 @@ assert_eq("D^JM0_hat", finalize(D_hatM0[2]), targets.POINT_MASS["D^JM0_hat"])
 assert_eq("D^M0M0", finalize(D[(M0, M0)]), targets.POINT_MASS["D^M0M0"])
 
 # ---------------------------------------------------------------------------
-# T_d (eqn:TD-impulsive) versus T_d^* (eqn:Td*)
+# T_d (eqn:Td-impulsive) versus T_d^* (eqn:Td*)
 # ---------------------------------------------------------------------------
 print("T_d relation (eqn:Td*):")
-# Gm/(15 a^3 T_d) = <Q_t/r^2> (eqn:TD-impulsive), and eqn:Td* states
+# Gm/(15 a^3 T_d) = <Q_t/r^2> (eqn:Td-impulsive), and eqn:Td* states
 # T_d = T_d^* sqrt(1-e^2) / [logLam - 8/3 + 4 log(2 sqrt(1-e^2)/(1+sqrt(1-e^2)))].
 avg_Qt_r2 = orbit_average(Qt_pm / r_of_E**2)
 Td_from_avg = finalize(G * m / (15 * a**3 * avg_Qt_r2))   # = T_d, in terms of T_d^*

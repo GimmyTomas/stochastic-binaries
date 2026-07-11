@@ -8,9 +8,9 @@ evaluated in SI. Each function implements a labeled equation of the paper:
     td_tidal_perturbers     eqn:Td-tidal-R  = eqn:Td-large (extended, R > a)
     td_pointmass_perturbers eqn:Td* with T_d ~ T_d^*/logLambda
                             (e-dependent factors neglected, as in
-                            eqn:Td-small-gaia)
+                            eqn:Td-small-substructures)
     td_ism                  the Gamma-function formula of sec:ism
-    td_gw                   sec:blas (GW background with Omega_gw ~ 1/f)
+    td_gw                   sec:lit-gw-background (GW background with Omega_gw ~ 1/f)
     td_from_Prho            eqn:Td-Prho (generic density power spectrum,
                             numeric double integral)
 """
@@ -63,7 +63,7 @@ def log_lambda_pointmass(sigma_kms, a_pc, m1_msun, m2_msun, mstar_msun, e=0.0):
 def td_pointmass_perturbers(m_msun=1.0, mstar_msun=1.0, sigma_kms=100.0,
                             rho_msun_pc3=0.026, a_pc=0.1, logLam=None):
     """T_d ~ T_d^*/logLambda (eqn:Td*, e-dependent factors neglected as in
-    eqn:Td-small-gaia). T_d^* = m sigma/(40 sqrt(2pi) G m_*^2 n a)."""
+    eqn:Td-small-substructures). T_d^* = m sigma/(40 sqrt(2pi) G m_*^2 n a)."""
     n = rho_msun_pc3 / mstar_msun
     if logLam is None:
         logLam = log_lambda_pointmass(sigma_kms, a_pc, m_msun / 2, m_msun / 2,
@@ -94,7 +94,7 @@ def td_ism(m_msun=1.0, a_pc=0.1, model="R8"):
 
 
 def td_gw(m_msun=1.0, a_pc=0.1, f_hz=1e-8, omega_gw=1e-9, h0_kms_mpc=70.0):
-    """sec:blas: T_d = Gm/(9 pi^2 a^3 H0^2 f Omega_gw(f)) for Omega_gw ~ 1/f."""
+    """sec:lit-gw-background: T_d = Gm/(9 pi^2 a^3 H0^2 f Omega_gw(f)) for Omega_gw ~ 1/f."""
     H0 = h0_kms_mpc / 3.0857e19            # 1/s
     m = m_msun * MSUN_KG
     a = a_pc * PC_M

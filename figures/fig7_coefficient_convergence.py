@@ -1,6 +1,6 @@
-"""Figure 7 (fig:short-coherence-numerics, Appendix sec:numerical-check):
+"""Figure 7 (fig:white-noise-numerics, Appendix sec:numerical-check):
 non-perturbative Monte-Carlo verification of the white-noise tidal
-Fokker--Planck coefficients eqn:Ba-short-coherence .. eqn:Dee-short-coherence.
+Fokker--Planck coefficients eqn:Ba-white-noise .. eqn:Dee-white-noise.
 
 Method (as described in the appendix):
 * The stochastic tidal tensor is built as T_ij(t) = zeta(t) delta_ij +
@@ -9,7 +9,7 @@ Method (as described in the appendix):
   autocorrelation exp(-|tau|/tau_c) and variances (exact update rule)
       sigma_zeta^2 = Gm/(18 a^3 T_d tau_c),
       sigma_xi^2   = Gm/(15 a^3 T_d tau_c),
-  which reproduces the correlator eqn:TD-tidal exactly.
+  which reproduces the correlator eqn:Td-tidal exactly.
 * An ensemble of binaries (e0 = 0.3, mean anomalies uniform) is integrated
   with a leapfrog (kick-drift-kick) scheme for 3 orbital periods, each binary
   under an independent realization -- and its ANTITHETIC partner
@@ -60,7 +60,7 @@ TRACELESS_BASIS = np.array([
 
 
 def predicted(a, e, invTd):
-    """eqn:Ba-short-coherence .. eqn:Dee-short-coherence."""
+    """eqn:Ba-white-noise .. eqn:Dee-white-noise."""
     return np.array([
         a * (18 + 19 * e**2) / 30 * invTd,
         (28 - 51 * e**2 - 103 * e**4) / (240 * e) * invTd,

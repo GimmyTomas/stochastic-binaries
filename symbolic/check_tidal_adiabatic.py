@@ -1,11 +1,11 @@
-"""Adiabatic tidal perturbations (sec:longcoherence): verify every drift and
+"""Adiabatic tidal perturbations (sec:adiabatic): verify every drift and
 diffusion coefficient of the paper from first principles.
 
 Pipeline (eqn:Deltaw1, eqn:Deltaww1, eqn:Bmu, eqn:Dmunu):
 1. build the tidal force tensors g^mu_ij from Gauss's equations (eqn:Fs-tidal);
 2. orbit-average them (adiabatic regime: average FIRST, then contract);
 3. B^mu = (1/2) d_nu(gbar^mu) : gbar^nu, D^munu = gbar^mu : gbar^nu, with the
-   isotropic traceful correlator (Gm/(a^3 Td)) * ONE_ijkl/15 (eqn:TD-tidal);
+   isotropic traceful correlator (Gm/(a^3 Td)) * ONE_ijkl/15 (eqn:Td-tidal);
 4. compare with the paper in all four parametrizations:
    (a, e), (E, J), Euler angles (Omega, i, omega, M0) [Appendix B], and the
    body frame (ehat, qhat, Jhat, M0).
@@ -86,15 +86,15 @@ for var in SLOW_VARS:
         dgbar[(var, nu)] = gbar[var].applyfunc(lambda x, v=nu: sp.diff(x, v))
 print(f"  done ({time.time()-t0:.0f}s)")
 
-# The draft's example components (eqn:gexy block) are quoted in the perifocal
+# The draft's example components (eqn:gbar-components block) are quoted in the perifocal
 # frame (R = identity): only the xy / yx components survive.
 gbar_pf_a = avg_matrix(g_tensor(a))
 gbar_pf_e = avg_matrix(g_tensor(e))
-print("Example averaged components (eqn:gexy block):")
+print("Example averaged components (eqn:gbar-components block):")
 assert_eq("gbar^a_xy", gbar_pf_a[0, 1], targets.ADIABATIC["gbar^a_xy"])
 assert_eq("gbar^a_yx", gbar_pf_a[1, 0], -targets.ADIABATIC["gbar^a_xy"])
 # See the NOTE in sbx.targets: the exact result sits in the yx slot with a
-# plus sign (the draft's eqn:gexy quotes -(5/2)... in xy, a sign/slot typo in
+# plus sign (the draft's eqn:gbar-components quotes -(5/2)... in xy, a sign/slot typo in
 # the illustrative example only; all final coefficients below are unaffected).
 assert_eq("gbar^e_yx", gbar_pf_e[1, 0], targets.ADIABATIC["gbar^e_yx"])
 assert_eq("gbar^a other components vanish",
@@ -121,7 +121,7 @@ print(f"  done ({time.time()-t0:.0f}s)")
 # ---------------------------------------------------------------------------
 # 4a. (a, e) sector
 # ---------------------------------------------------------------------------
-print("(a,e) sector (eqn:Ba-long-coherence .. eqn:Dee-long-coherence):")
+print("(a,e) sector (eqn:Ba-adiabatic .. eqn:Dee-adiabatic):")
 assert_eq("B^a", B[a], targets.ADIABATIC["B^a"])
 assert_eq("B^e", B[e], targets.ADIABATIC["B^e"])
 assert_eq("D^aa", D[(a, a)], targets.ADIABATIC["D^aa"])
@@ -167,9 +167,9 @@ assert_eq("D^omegaM0", D[(om, M0)], targets.ADIABATIC_EULER["D^omegaM0"])
 assert_eq("D^M0M0", D[(M0, M0)], targets.ADIABATIC["D^M0M0"])
 
 # ---------------------------------------------------------------------------
-# 4d. Body frame (ehat, qhat, Jhat, M0) via eqn:Matrix / eqn:Dhatmuhatmu
+# 4d. Body frame (ehat, qhat, Jhat, M0) via eqn:change-of-basis-matrix / eqn:Dhatmuhatmu
 # ---------------------------------------------------------------------------
-print("Body-frame sector (eqn:Dhatehate-long .. eqn:DM0M0-long):")
+print("Body-frame sector (eqn:Dhatehate-adiabatic .. eqn:DM0M0-adiabatic):")
 B_eul = [B[Om], B[inc], B[om]]
 D_eul = sp.Matrix(3, 3, lambda p, q: D[((Om, inc, om)[p], (Om, inc, om)[q])])
 D_eulM0 = [D[(Om, M0)], D[(inc, M0)], D[(om, M0)]]
