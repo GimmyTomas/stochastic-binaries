@@ -1,4 +1,4 @@
-"""Traceless (gravitational-wave background) tidal correlator (sec:blas).
+"""Traceless (gravitational-wave background) tidal correlator (sec:lit-gw-background).
 
 A stochastic GW background acts like a tidal field whose correlator has the
 trace removed (eqn:traceless):
@@ -14,7 +14,7 @@ traceless correlator and verifies:
 * that the drift still vanishes in the body frame;
 * and it prints the differences B_wn - B_ad, D_wn - D_ad, which are the
   predicted Fokker--Planck coefficients for a GW background with
-  Omega_gw ~ 1/f (eqn:B-check-blas, eqn:D-check-blas).
+  Omega_gw ~ 1/f (eqn:B-check-gw, eqn:D-check-gw).
 """
 
 import pathlib
@@ -99,10 +99,10 @@ assert_eq("B^M0 = 0", B_wn[M0], 0)
 
 # ---------------------------------------------------------------------------
 # Informational: the Blas--Jenkins combination (white-noise minus adiabatic)
-# for a GW background with Omega_gw ~ 1/f (eqn:B-check-blas, eqn:D-check-blas)
+# for a GW background with Omega_gw ~ 1/f (eqn:B-check-gw, eqn:D-check-gw)
 # ---------------------------------------------------------------------------
 print("\nPredicted GW-background coefficients (white-noise minus adiabatic,")
-print("traceless; eqn:B-check-blas / eqn:D-check-blas), for reference:")
+print("traceless; eqn:B-check-gw / eqn:D-check-gw), for reference:")
 for name, wn, ad in [
     ("B^a", B_wn[a], B_ad[a]),
     ("B^e", B_wn[e], B_ad[e]),

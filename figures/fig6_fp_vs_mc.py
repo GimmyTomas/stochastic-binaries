@@ -1,6 +1,6 @@
-"""Figure 6 (fig:fp_vs_mc): Fokker--Planck vs brute-force Monte Carlo for
+"""Figure 6 (fig:fp-vs-mc): Fokker--Planck vs brute-force Monte Carlo for
 binaries undergoing impulsive encounters with uniform-density spherical
-perturbers (sec:Gai; setup of Ramirez et al. 2022).
+perturbers (sec:dm-substructures; setup of Ramirez et al. 2022).
 
 Common parameters (caption): sigma = 200 km/s, rho_bar = 0.0104 Msun/pc^3,
 m_* = 10^3 Msun, e0 = 0.5, total binary mass m = 1 Msun, evolution time

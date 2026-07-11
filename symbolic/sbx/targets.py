@@ -5,7 +5,7 @@ Conventions:
 * SQ = sqrt(1-e^2) is kept explicit (the verifier converts it to w);
 * EE = -G m/(2 a) is the orbital energy, JJ = sqrt(G m a (1-e^2)) the
   angular momentum magnitude;
-* T_d is the diffusion time of eqn:TD-tidal (tidal) / eqn:TD-impulsive
+* T_d is the diffusion time of eqn:Td-tidal (tidal) / eqn:Td-impulsive
   (impulsive); T_d^* is defined in eqn:Td*; logLambda in eqn:logLambda.
 """
 
@@ -19,29 +19,29 @@ JJ = sp.sqrt(G * m * a * (1 - e**2))
 L = LogLam
 
 # ---------------------------------------------------------------------------
-# Adiabatic tidal regime (sec:longcoherence)
+# Adiabatic tidal regime (sec:adiabatic)
 # ---------------------------------------------------------------------------
 ADIABATIC = {
-    # eqn:Ba-long-coherence .. eqn:Dee-long-coherence
+    # eqn:Ba-adiabatic .. eqn:Dee-adiabatic
     "B^a": sp.Integer(0),
     "B^e": 5 * e * (3 - 5 * e**2) / (24 * Td),
     "D^aa": sp.Integer(0),
     "D^ae": sp.Integer(0),
     "D^ee": 5 * e**2 * (1 - e**2) / (12 * Td),
-    # (E, J) block below eqn:Dee-long-coherence
+    # (E, J) block below eqn:Dee-adiabatic
     "B^E": sp.Integer(0),
     "B^J": -5 * JJ * e**2 * (4 - 5 * e**2) / (24 * (1 - e**2) * Td),
     "D^EE": sp.Integer(0),
     "D^EJ": sp.Integer(0),
     "D^JJ": 5 * G * m * a * e**4 / (12 * Td),
-    # body frame, eqn:Dhatehate-long .. eqn:DM0M0-long
+    # body frame, eqn:Dhatehate-adiabatic .. eqn:DM0M0-adiabatic
     "D^ee_hat": (1 + 4 * e**2) ** 2 / (60 * (1 - e**2) * Td),
     "D^qq_hat": (1 - e**2) / (60 * Td),
     "D^JJ_hat": 43 * (1 - e**2) / (60 * Td),
     "D^JM0_hat": -SQ * (67 + 43 * e**2) / (60 * Td),
     "D^M0M0": (123 + 134 * e**2 + 43 * e**4) / (60 * Td),
     "B^M0": sp.Integer(0),
-    # orbit-averaged force examples, eqn:gexy block.
+    # orbit-averaged force examples, eqn:gbar-components block.
     # NOTE on gbar^e: the draft quotes gbar^e_xy = -(5/2) a^{3/2} e sqrt((1-e^2)/(Gm)).
     # The exact calculation (confirmed by direct numerical quadrature of Gauss's
     # equation for edot under an explicit symmetric tidal tensor) gives the
@@ -52,7 +52,7 @@ ADIABATIC = {
     "gbar^e_yx": sp.Rational(5, 2) * a ** sp.Rational(3, 2) * e * sp.sqrt((1 - e**2) / (G * m)),
 }
 
-# Appendix B, adiabatic block (sec:BD-orientation)
+# Appendix B, adiabatic block (sec:coeffs-euler-angles)
 _D_OmOm_long = (2 + 6 * e**2 + 17 * e**4 - 5 * e**2 * (2 + 3 * e**2) * sp.cos(2 * om)) \
     / (120 * (1 - e**2) * sp.sin(inc) ** 2 * Td)
 ADIABATIC_EULER = {
@@ -75,22 +75,22 @@ ADIABATIC_EULER = {
 }
 
 # ---------------------------------------------------------------------------
-# White-noise tidal regime (sec:shortcoherence)
+# White-noise tidal regime (sec:white-noise)
 # ---------------------------------------------------------------------------
 WHITENOISE = {
-    # eqn:Ba-short-coherence .. eqn:Dee-short-coherence
+    # eqn:Ba-white-noise .. eqn:Dee-white-noise
     "B^a": a * (18 + 19 * e**2) / (30 * Td),
     "B^e": (28 - 51 * e**2 - 103 * e**4) / (240 * e * Td),
     "D^aa": 2 * a**2 * (2 + e**2) / (15 * Td),
     "D^ae": -2 * a * e * (1 - e**2) / (15 * Td),
     "D^ee": 7 * (1 - e**2) * (4 + 5 * e**2) / (120 * Td),
-    # eqn:BE-short .. eqn:DJJ-short
+    # eqn:BE-white-noise .. eqn:DJJ-white-noise
     "B^E": -EE * (2 + 3 * e**2) / (6 * Td),
     "B^J": JJ * (8 + 40 * e**2 + 15 * e**4) / (240 * (1 - e**2) * Td),
     "D^EE": 2 * EE**2 * (2 + e**2) / (15 * Td),
     "D^EJ": -EE * JJ * (2 + 3 * e**2) / (15 * Td),
     "D^JJ": G * m * a * (8 + 40 * e**2 + 15 * e**4) / (120 * Td),
-    # body frame, eqn:Dhatehate-short .. eqn:DM0M0-short
+    # body frame, eqn:Dhatehate-white-noise .. eqn:DM0M0-white-noise
     "D^ee_hat": (4 + 41 * e**2 + 18 * e**4) / (120 * (1 - e**2) * Td),
     "D^qq_hat": (4 + 3 * e**2) / (120 * Td),
     "D^JJ_hat": (28 + 25 * e**2 - 46 * e**4) / (120 * e**2 * Td),
@@ -123,7 +123,7 @@ WHITENOISE_EULER = {
 }
 
 # ---------------------------------------------------------------------------
-# Traceless (GW) correlator, sec:blas
+# Traceless (GW) correlator, sec:lit-gw-background
 # ---------------------------------------------------------------------------
 TRACELESS_ADIABATIC = {
     # eqn:DhatJhatJ-traceless block (adiabatic)

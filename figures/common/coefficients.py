@@ -7,7 +7,7 @@ the draft (and to symbolic/check_* scripts that verify those equations).
 
 Solver variables:
 * white-noise tidal  (fig 3):  u = x = ln(a/a0),  v = eps = e^2,
-  with T_d(a) = (a0/a)^3 T_d0 (eqn:TD-tidal), units a0 = T_d0 = 1;
+  with T_d(a) = (a0/a)^3 T_d0 (eqn:Td-tidal), units a0 = T_d0 = 1;
 * point-mass impulsive (fig 4): u = a/a0 (linear), v = eps = e^2, fixed
   logLambda, with 1/T_d*(a) ~ a (eqn:Td*), time in units of
   T_d0 = T_d(a0, e0=0.5) from eqn:Td* -- as in the caption of fig 4;
@@ -38,7 +38,7 @@ def _ito_ae(Ba, Be, Daa, Dae, Dee, a, e, log_a=True):
 
 
 # ---------------------------------------------------------------------------
-# White-noise tidal (fig 3): eqn:Ba-short-coherence .. eqn:Dee-short-coherence
+# White-noise tidal (fig 3): eqn:Ba-white-noise .. eqn:Dee-white-noise
 # ---------------------------------------------------------------------------
 def whitenoise_ae(a, e):
     """Draft (a,e) coefficients with 1/T_d = a^3 (units a0 = T_d0 = 1)."""

@@ -1,4 +1,4 @@
-"""White-noise tidal perturbations (sec:shortcoherence): verify every drift
+"""White-noise tidal perturbations (sec:white-noise): verify every drift
 and diffusion coefficient of the paper from first principles.
 
 Pipeline (eqn:Deltaw2, eqn:Deltaww2): contract the force tensors at fixed
@@ -40,7 +40,7 @@ print(f"  done ({time.time()-t0:.0f}s)")
 # ---------------------------------------------------------------------------
 # (a, e) sector
 # ---------------------------------------------------------------------------
-print("(a,e) sector (eqn:Ba-short-coherence .. eqn:Dee-short-coherence):")
+print("(a,e) sector (eqn:Ba-white-noise .. eqn:Dee-white-noise):")
 assert_eq("B^a", B[a], targets.WHITENOISE["B^a"])
 assert_eq("B^e", B[e], targets.WHITENOISE["B^e"])
 assert_eq("D^aa", D[(a, a)], targets.WHITENOISE["D^aa"])
@@ -68,7 +68,7 @@ else:
 # ---------------------------------------------------------------------------
 # (E, J) sector: Ito route AND the first-principles route of Appendix C
 # ---------------------------------------------------------------------------
-print("(E,J) sector via Ito transform (eqn:BE-short .. eqn:DJJ-short):")
+print("(E,J) sector via Ito transform (eqn:BE-white-noise .. eqn:DJJ-white-noise):")
 EE_expr = -G * m / (2 * a)
 JJ_expr = sp.sqrt(G * m * a * (1 - e**2))
 B_EJ, D_EJ = ito_transform([a, e], [EE_expr, JJ_expr],
@@ -129,7 +129,7 @@ assert_eq("D^M0M0", D[(M0, M0)], targets.WHITENOISE["D^M0M0"])
 # ---------------------------------------------------------------------------
 # Body frame (ehat, qhat, Jhat, M0)
 # ---------------------------------------------------------------------------
-print("Body-frame sector (eqn:Dhatehate-short .. eqn:DM0M0-short):")
+print("Body-frame sector (eqn:Dhatehate-white-noise .. eqn:DM0M0-white-noise):")
 B_eul = [B[Om], B[inc], B[om]]
 D_eul = sp.Matrix(3, 3, lambda p, q: D[((Om, inc, om)[p], (Om, inc, om)[q])])
 D_eulM0 = [D[(Om, M0)], D[(inc, M0)], D[(om, M0)]]
@@ -148,7 +148,7 @@ assert_eq("D^qM0_hat = 0", D_hatM0[1], 0)
 assert_eq("D^JM0_hat", D_hatM0[2], targets.WHITENOISE["D^JM0_hat"])
 
 # ---------------------------------------------------------------------------
-# Degenerate e -> 0 limit of the (Jhat, M0) block (sec:orientation-short-coherence)
+# Degenerate e -> 0 limit of the (Jhat, M0) block (sec:orientation-white-noise)
 # ---------------------------------------------------------------------------
 print("e -> 0 degeneracy of the (Jhat, M0) block:")
 DJJh = targets.WHITENOISE["D^JJ_hat"]

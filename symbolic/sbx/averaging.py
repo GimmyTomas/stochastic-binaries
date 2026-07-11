@@ -1,6 +1,6 @@
 """Fast orbit averaging.
 
-The paper defines the orbit average of a function X(phi, E) as (eqn:orbit_average)
+The paper defines the orbit average of a function X(phi, E) as (eqn:orbit-average)
 
     Xbar = (1/2pi) Int_0^{2pi} X(phi(E), E) (1 - e cos E) dE ,
 
@@ -221,7 +221,7 @@ def _avg_monomial(cpow, spow, qpow, logpow, flavor=None):
 
 
 def orbit_average(expr, jacobian=True):
-    """Orbit average (eqn:orbit_average) of a U-form expression.
+    """Orbit average (eqn:orbit-average) of a U-form expression.
 
     ``expr`` must be a finite sum of terms coeff * cos(E)^c * sin(E)^s * U^q
     * LNU^l with coeff independent of E, U, LNU (l in {0, 1}).

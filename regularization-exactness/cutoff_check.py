@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 r"""
-Fourier-space origin of the two Coulomb cutoffs b_{90,1}, b_{90,2} for point-mass perturbers
-(Appendix B of impulsive-point-mass.tex).
+Fourier-space origin of the two Coulomb cutoffs b_{90,1}, b_{90,2} for point-mass perturbers.
+
+This documents the SCHEME side of the regularization: how the sharp-b cutoff used by the
+companion paper ("Evolution of Binaries Under Stochastic Perturbations", eqn:YpYp-pp)
+produces the clean logarithm with no additive constant, and how an alternative (sharp-k)
+regulator would shift it -- the shift that regularization-exactness.tex proves the exact
+dynamics does NOT make (Lemma "Single-body self-energy"; see also the excision
+shape-dependence discussed in its far-region lemma).
 
 For a point mass tilde_rho(k)=1, the trace and anisotropy are
    Y_perp + Y_par = 4 pi int_0^inf (1 - J0(k rperp)) dk/k   (UV-divergent: close encounters),

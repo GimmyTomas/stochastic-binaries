@@ -1,7 +1,7 @@
-"""Figure 3 (fig:f-short-coherence): numerical solution of the (a, e) sector
+"""Figure 3 (fig:f-white-noise): numerical solution of the (a, e) sector
 of the Fokker--Planck equation (eqn:fp-ae) in the WHITE-NOISE tidal regime
-(sec:shortcoherence), with the coefficients eqn:Ba-short-coherence ..
-eqn:Dee-short-coherence and the T_d = (a0/a)^3 T_d0 scaling.
+(sec:white-noise), with the coefficients eqn:Ba-white-noise ..
+eqn:Dee-white-noise and the T_d = (a0/a)^3 T_d0 scaling.
 
 Setup as in the caption: square grid in (x = ln(a/a0), eps = e^2) on
 [-3, 6] x [0, 1]; initial condition a narrow Gaussian (a/a0: 1 +/- 0.05,

@@ -63,8 +63,8 @@ relative to their own path).
 The scripts follow the paper's conventions exactly: slow variables
 w = (a, e, Omega, i, omega, M0); tidal diffusion time defined by
 Int <T_ij T_kl> dtau = (Gm/(a^3 T_d)) (delta delta + delta delta + delta
-delta)/15 (eqn:TD-tidal); impulsive diffusion time by <Q_t/r^2> =
-Gm/(15 a^3 T_d) (eqn:TD-impulsive); T_d^* = m sigma/(40 sqrt(2 pi) G m_*^2
+delta)/15 (eqn:Td-tidal); impulsive diffusion time by <Q_t/r^2> =
+Gm/(15 a^3 T_d) (eqn:Td-impulsive); T_d^* = m sigma/(40 sqrt(2 pi) G m_*^2
 n a) (eqn:Td*). Every hard-coded expression carries a comment naming the
 equation label it implements.
 

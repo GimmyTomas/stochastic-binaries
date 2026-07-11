@@ -34,11 +34,11 @@ if not _selfcheck():
 
 print("Diffusion times (Sec. V):")
 check("ULDM (eqn:Td-uldm) [Gyr]", td_uldm(1, 1e-21, 100, 1, 0.1), 3.8)
-check("DM subhaloes, tidal (eqn:Td-large-gaia) [Gyr]",
+check("DM subhaloes, tidal (eqn:Td-large-substructures) [Gyr]",
       td_tidal_perturbers(1, 1e3, 100, 0.1, 0.026, 0.1), 0.87)
-check("MACHOs/PBHs, point-mass (eqn:Td-small-gaia) [Gyr]",
+check("MACHOs/PBHs, point-mass (eqn:Td-small-substructures) [Gyr]",
       td_pointmass_perturbers(1, 1, 100, 0.026, 0.1, logLam=25), 3.5)
-check("ISM, solar neighbourhood R8 (eqn:Td-ISM) [Gyr]",
+check("ISM, solar neighbourhood R8 (eqn:Td-ism) [Gyr]",
       td_ism(1, 0.1, "R8"), 45)
 check("ISM, inner-galaxy LGR4 [Gyr]", td_ism(1, 0.1, "LGR4"), 1.6)
 

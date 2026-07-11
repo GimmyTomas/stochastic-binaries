@@ -35,7 +35,7 @@ om = sp.Symbol("omega", real=True)            # argument of pericenter
 M0 = sp.Symbol("M_0", real=True)              # mean anomaly at epoch
 
 # --- environment / normalization symbols ------------------------------------
-Td = sp.Symbol("T_d", positive=True)          # diffusion time, eqn:TD-tidal / eqn:TD-impulsive
+Td = sp.Symbol("T_d", positive=True)          # diffusion time, eqn:Td-tidal / eqn:Td-impulsive
 Tds = sp.Symbol("T_d^*", positive=True)       # T_d^*, eqn:Td*
 LogLam = sp.Symbol("logLambda", real=True)    # effective Coulomb logarithm, eqn:logLambda
 La = sp.Symbol("L_a", real=True)              # r-independent part of L(r): L(r) = La + 2*LNU

@@ -44,7 +44,17 @@ per-trajectory ingredients directly:
      (pericenter ~ 0) at beta ~ bE >> b90, with |d peri/d beta| = O(1) across the ring.
      Hence mu{pericenter <= s} ~ 2 pi bE s there, the caustic term of the measure estimate.
 
-G = m* = 1 throughout.
+  6. RAINBOW SCATTERING of a heavy perturber (Lemma "Sequential encounters" and the
+     lab-angle formula): for m* > m1, the perturber's LAB deflection angle off a single
+     recoiling body,  tan(chi) = m1 sin(Theta) / (m* + m1 cos(Theta))  with Theta the
+     relative-orbit Rutherford angle, attains a maximum chi_max = arcsin(m1/m*) at
+     beta_rb = b90 sqrt((m*-m1)/(m*+m1)) -- a fold (rainbow) where the lab cross-section
+     diverges.  Consequently the downstream miss map g(beta) (transverse offset at a lab
+     plane a distance ell behind the scatterer) is NON-monotone below b90 while g' >= 1
+     above it, and its Einstein zero sits at sqrt(2 G m1 ell)/V (bare lens mass), not at
+     sqrt(2 b90 ell).  We measure chi(beta) and g(beta) from direct integrations.
+
+G = 1 throughout; m* = 1 in Sections 1-5 and m* = 3 in Section 6 (heavy perturber).
 """
 import sys, time
 import numpy as np
@@ -381,6 +391,118 @@ print(f"  direct hit at beta ~ bE >> b90 with O(1) slope: {PASS(ok5)}")
 print("  => mu{pericenter <= s} ~ 2 pi bE s / slope on the ring: the caustic term of the")
 print("     measure estimate; no O(s^2) bound can hold near alignment.  Only the O(eta)")
 print("     solid angle of aligned orientations keeps this out of the theta-averages.")
+print(f"  (elapsed {time.time()-t0:.0f}s)")
+sys.stdout.flush()
+
+# --------------------------------------------------------------------------------------
+print("\n"+"="*88)
+print("SECTION 6 -- rainbow scattering of a heavy perturber (m* > m1)")
+print("             [Lemma 'Sequential encounters'; lab-angle formula]")
+print("  Measured lab deflection chi(beta) off a single recoiling body must follow")
+print("  tan chi = m1 sin(Theta)/(m* + m1 cos(Theta)), peak at chi_max = arcsin(m1/m*),")
+print("  beta_rb = b90 sqrt((m*-m1)/(m*+m1)); the downstream miss map is non-monotone")
+print("  below b90, has g' >= 1 above, and its Einstein zero is sqrt(2 G m1 ell)/V.")
+print("="*88)
+mstar = 3.0                       # heavy perturber for this section (module-level global)
+m1_rb = 1.0; V = 6.0
+b90_rb = G*(m1_rb+mstar)/V**2
+zhat = np.array([0., 0., 1.])
+
+def lab_two_body(beta, ell=None, Lstart=None, rtol=1e-10, atol=1e-12):
+    """Perturber (mass mstar) incoming along +z at impact parameter beta; single free
+    body of mass m1_rb at rest at the origin.  Returns the measured asymptotic lab
+    deflection angle chi of the perturber and, if ell is given, the transverse offset
+    ('miss') where the perturber crosses the lab plane z = ell."""
+    Lstart = Lstart if Lstart is not None else (2000.0*b90_rb if ell is None else 1000.0*b90_rb)
+    y0 = np.concatenate([np.array([beta, 0., -Lstart]), np.zeros(3),
+                         V*zhat, np.zeros(3)])                    # x*, x1, v*, v1
+    def rhs(t, y):
+        d = y[0:3] - y[3:6]
+        r3 = (d@d)**1.5
+        return np.concatenate([y[6:9], y[9:12], -G*m1_rb*d/r3, G*mstar*d/r3])
+    events = []
+    if ell is not None:
+        def cross(t, y): return y[2] - ell
+        cross.terminal = True; cross.direction = 1.0
+        events.append(cross)
+    tend = 6.0*(Lstart + (ell if ell is not None else Lstart))/V
+    sol = solve_ivp(rhs, [0.0, tend], y0, method='DOP853', rtol=rtol, atol=atol,
+                    events=events or None)
+    miss = None
+    if ell is not None and sol.t_events[0].size:
+        miss = sol.y_events[0][0][0]              # x-coordinate at the plane (planar orbit)
+    vf = sol.y[6:9, -1]
+    chi = float(np.arccos(np.clip(vf@zhat/np.linalg.norm(vf), -1.0, 1.0)))
+    # launch-distance corrections for the analytic comparison
+    D0 = np.hypot(beta, Lstart)
+    Vinf = np.sqrt(V**2 - 2*G*(m1_rb+mstar)/D0)
+    beta_inf = beta*V/Vinf
+    return chi, miss, Vinf, beta_inf
+
+def chi_formula(beta_inf, Vinf):
+    Theta = 2.0*np.arctan(G*(m1_rb+mstar)/Vinf**2/beta_inf)
+    return float(np.arctan2(m1_rb*np.sin(Theta), mstar + m1_rb*np.cos(Theta)))
+
+chi_max_pred = np.arcsin(m1_rb/mstar)
+beta_rb_pred = b90_rb*np.sqrt((mstar-m1_rb)/(mstar+m1_rb))
+print(f"  m1={m1_rb}, m*={mstar}, V={V}:  b90={b90_rb:.4f},"
+      f"  chi_max={chi_max_pred:.4f} rad at beta_rb={beta_rb_pred/b90_rb:.3f} b90")
+t0 = time.time()
+grid6 = np.geomspace(0.2, 8.0, 33)*b90_rb
+chis, preds = [], []
+for beta in grid6:
+    chi, _, Vinf, beta_inf = lab_two_body(beta)
+    chis.append(chi); preds.append(chi_formula(beta_inf, Vinf))
+chis = np.array(chis); preds = np.array(preds)
+err_chi = np.max(np.abs(chis - preds))
+k6 = int(np.argmax(chis))
+chi_max_meas = chis[k6]; beta_rb_meas = grid6[k6]
+print(f"  max |chi_measured - chi_formula| over {len(grid6)} betas: {err_chi:.2e} rad")
+print(f"  measured peak: chi_max={chi_max_meas:.4f} at beta={beta_rb_meas/b90_rb:.3f} b90"
+      f"   (predicted {chi_max_pred:.4f} at {beta_rb_pred/b90_rb:.3f} b90)")
+ok6a = err_chi < 3e-3
+ok6b = abs(chi_max_meas - chi_max_pred) < 5e-3 and \
+       abs(beta_rb_meas/beta_rb_pred - 1.0) < 0.15
+print(f"  lab-angle formula reproduced: {PASS(ok6a)};  rainbow fold located: {PASS(ok6b)}")
+sys.stdout.flush()
+
+ell = 200.0*b90_rb
+bE_rb = np.sqrt(2.0*G*m1_rb*ell)/V                 # bare lens mass m1
+bE_wrong = np.sqrt(2.0*b90_rb*ell)                 # the (wrong) reduced-mass version
+print(f"\n  miss map at ell = 200 b90:  Einstein zero predicted at sqrt(2 G m1 ell)/V"
+      f" = {bE_rb/b90_rb:.2f} b90   [sqrt(2 b90 ell) would be {bE_wrong/b90_rb:.2f} b90]")
+grid_m = np.array([0.30, 0.45, 0.60, 0.75, 0.90, 1.10, 1.40, 2.0, 3.0, 5.0, 8.0,
+                   9.0, 10.0, 11.0, 12.0])*b90_rb
+misses = []
+for beta in grid_m:
+    _, miss, _, _ = lab_two_body(beta, ell=ell)
+    misses.append(miss)
+misses = np.array(misses)
+slopes = np.diff(misses)/np.diff(grid_m)
+low = grid_m[:-1] < 0.95*b90_rb
+high = grid_m[:-1] >= 1.05*b90_rb
+ok6c = np.min(slopes[low]) < 0.0                    # non-monotone (plunge) below b90
+ok6d = np.min(slopes[high]) > 0.9                   # g' >= 1 above b90 (finite-ell tolerance)
+for b, m in zip(grid_m, misses):
+    print(f"    beta = {b/b90_rb:6.2f} b90   miss(z=ell) = {m/b90_rb:+9.2f} b90")
+# bisect the Einstein zero on the monotone branch
+lo6, hi6 = 8.0*b90_rb, 12.0*b90_rb
+for _ in range(24):
+    mid = 0.5*(lo6 + hi6)
+    _, mm, _, _ = lab_two_body(mid, ell=ell)
+    if mm < 0.0: lo6 = mid
+    else: hi6 = mid
+    if hi6 - lo6 < 1e-3*b90_rb:
+        break
+beta0 = 0.5*(lo6 + hi6)
+ok6e = abs(beta0/bE_rb - 1.0) < 0.10 and beta0/bE_wrong < 0.65
+print(f"\n  plunge branch below b90 (min slope {np.min(slopes[low]):+.1f} < 0): {PASS(ok6c)};"
+      f"   g' >= 1 above b90 (min slope {np.min(slopes[high]):+.2f}): {PASS(ok6d)}")
+print(f"  Einstein zero measured at beta0 = {beta0/b90_rb:.2f} b90 = {beta0/bE_rb:.3f} x"
+      f" sqrt(2 G m1 ell)/V   (= {beta0/bE_wrong:.3f} x the wrong sqrt(2 b90 ell)): {PASS(ok6e)}")
+print("  => the targeting map is the LAB deflection: monotone with g' >= 1 only above b90,")
+print("     rainbow fold below (the caustic terms of the sequential-encounter lemma), and")
+print("     the Einstein ring carries the bare lens mass -- recoil bookkeeping again.")
 print(f"  (elapsed {time.time()-t0:.0f}s)")
 
 print("\nDone.")

@@ -185,19 +185,24 @@ m1=m2=1.0; b90_target=0.05; V=np.sqrt((m1+mstar)/b90_target)
 print(f"  m1=m2={m1}, V={V:.4f}, b90={(m1+mstar)/V**2:.4f} fixed; C=1/V={1/V:.4f}")
 print(f"  a constant 'sqrt e' error would give dQ_r -> -(8pi/3)C = {-8*np.pi/3/V:+.4f} (NONZERO).\n")
 print(f"  {'eps':>7} {'r':>7} {'Qr_sup':>8} {'Qr_3bdy':>8} {'closed':>8} | "
-      f"{'dQr(3b-sup)':>16} {'dQr/Qr':>10} {'dTr/Tr':>10}")
+      f"{'dQr(3b-sup)':>16} {'dQr/Qr_sup':>11} {'dTr/Tr_sup':>11} {'dTr/Tr_3b':>10}")
 t0=time.time(); res=[]
 # eps=0.025 already shows the clean halving; 0.0125 (r=4) is added but is slow (~10 min).
+# Enhancements are quoted as (3body - superposition)/superposition, the convention used in
+# the note's sec:numerics table; dTr/Tr_3b (the 3-body-denominated ratio) is also printed.
 for eps,N in [(0.10,3000),(0.05,3000),(0.025,3000)]:
     d=mc(eps,m1,m2,V,N); Qc,Tc=closed_fixedV(d['r'],V,m1,m2)
-    rq=d['dQ'][0]/d['Qr_f']; rt=d['dT'][0]/d['Tr_f']; res.append((eps,rq,rt))
+    rq=d['dQ'][0]/d['Qr_s']; rt_s=d['dT'][0]/d['Tr_s']; rt_f=d['dT'][0]/d['Tr_f']
+    res.append((eps,rq,rt_s))
     print(f"  {eps:7.4f} {d['r']:7.3f} {d['Qr_s']:8.4f} {d['Qr_f']:8.4f} {Qc:8.4f} | "
-          f"{d['dQ'][0]:+8.4f}+-{d['dQ'][1]:.4f} {rq:+10.2e} {rt:+10.2e}")
+          f"{d['dQ'][0]:+8.4f}+-{d['dQ'][1]:.4f} {rq:+11.2e} {rt_s:+11.2e} {rt_f:+10.2e}")
     sys.stdout.flush()
 print(f"\n  (elapsed {time.time()-t0:.0f}s)")
-print("  scaling of |dQr/Qr| as eps halves (eps^1 -> ratio 2, eps^2 -> ratio 4):")
-for i in range(1,len(res)):
-    if abs(res[i][1])>1e-12:
-        print(f"     {res[i-1][0]:.4f}->{res[i][0]:.4f}:  {abs(res[i-1][1]):.2e} -> {abs(res[i][1]):.2e}"
-              f"   ratio {abs(res[i-1][1]/res[i][1]):.2f}")
+print("  scaling as eps halves (eps^1 -> ratio 2, eps^2 -> ratio 4):")
+for name,j in [("|dQr/Qr_sup|",1),("|dTr/Tr_sup|",2)]:
+    for i in range(1,len(res)):
+        if abs(res[i][j])>1e-12:
+            print(f"     {name} {res[i-1][0]:.4f}->{res[i][0]:.4f}:  "
+                  f"{abs(res[i-1][j]):.2e} -> {abs(res[i][j]):.2e}"
+                  f"   ratio {abs(res[i-1][j]/res[i][j]):.2f}")
 print("\nDone.")

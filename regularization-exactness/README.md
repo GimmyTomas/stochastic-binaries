@@ -11,7 +11,7 @@ the statement referenced in the paper's footnote in sec:point-mass:
 > are the exact leading-order result in the impulsive limit, with corrections
 > suppressed by powers of b_90/r.
 
-Three physical points the proof makes precise: (i) the recoil of the struck
+Four physical points the proof makes precise: (i) the recoil of the struck
 star during the encounter is essential -- pinning the stars would change the
 cutoff to G m_i/V^2; (ii) the companion deflects each close trajectory by an
 O(1) amount, but this survives the impact-parameter integration only at
@@ -20,7 +20,11 @@ cancels exactly in each body's kick); (iii) when the binary axis is nearly
 aligned with the flight direction, the upstream star acts as a gravitational
 lens: an annulus at its Einstein radius sqrt(2 G m_j r)/V focuses onto the
 downstream star (a caustic), which dominates the close-approach measure there
-but occupies too small a solid angle to affect the orientation averages.
+but occupies too small a solid angle to affect the orientation averages;
+(iv) a perturber heavier than a binary component has its lab-frame deflection
+capped at arcsin(m_i/m_*): the resulting fold (rainbow scattering) is a second,
+small-scale caustic in the sequential-encounter counting, whose extra measure
+terms the proof tracks explicitly (they too vanish in the impulsive limit).
 
 ## Verification scripts (self-contained; print PASS/FAIL)
 
@@ -28,8 +32,8 @@ but occupies too small a solid angle to affect the orientation averages.
 |---|---|---|
 | `exact_deflection_check.py` | the exact two-body kick split, the clean single-body self-energy 2 pi log(Lambda/b90) (Sec. 2), the angular isotropy of the close contribution, and 12-16M-sample Monte Carlos showing exact-deflection vs sharp-b90 differences vanish as a power of b90/r (Sec. 6-7) | ~1 min |
 | `three_body_check.py` | the two-body superposition ansatz against genuine (frozen-binary) three-body integrations: worst-case single trajectories and the Monte-Carlo halving test dQ_r -> 0 (Sec. 3-4, 7) | ~45 min |
-| `deflection_map_check.py` | the per-trajectory lemmas: recoil vs pinned cutoffs, the incoming deflection map b -> beta* (O(1) shift, area-preserving Jacobian at O(eta)), the osculating-element kick fidelity, the exact cancellation of the companion's direct impulse in the body kick (residual = the O(eta^{3/2}) tidal distortion, not the O(eta) impulse), and the Einstein-radius lensing caustic behind the aligned upstream star (Sec. 3-4) | ~3 min |
-| `cutoff_check.py` | the Fourier-space origin of the two per-body cutoffs and the scheme dependence of alternative (sharp-k) regulators (Sec. 2, 5) | ~1 min |
+| `deflection_map_check.py` | the per-trajectory lemmas: recoil vs pinned cutoffs (Sec. 1 of the note), the incoming deflection map b -> beta* (O(1) shift, area-preserving Jacobian at O(eta)) and the osculating-element kick fidelity (Sec. 4), the exact cancellation of the companion's direct impulse in the body kick (residual = the O(eta^{3/2}) tidal distortion, not the O(eta) impulse), the Einstein-radius lensing caustic behind the aligned upstream star, and the heavy-perturber rainbow fold of the lab-frame deflection map, chi_max = arcsin(m_1/m_*), with the Einstein zero at the bare lens mass (Sec. 3) | ~4 min |
+| `cutoff_check.py` | the Fourier-space origin of the two per-body cutoffs and the scheme dependence of alternative (sharp-k) regulators -- the scheme constants that the note proves the exact dynamics does not introduce (complements the self-energy lemma of Sec. 2 and the excision-shape discussion of Sec. 5) | ~1 min |
 
 The closed forms these scripts test (the in-plane tensor and the Q_r, Q_t
 constants) are independently re-derived symbolically in

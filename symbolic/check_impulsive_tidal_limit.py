@@ -11,7 +11,7 @@ Checks performed:
 2. The draft's orbit-average identities <r^2>, <r^4>, <3 r~^2 v~_r^2 +
    r~^2 v~_phi^2> quoted in sec:large-perturbers.
 3. Substituting Q_r = 3 A r^2, Q_t = A r^2 with A = Gm/(15 a^3 Td)
-   (eqn:TD-impulsive) into the impulsive formalism reproduces EXACTLY all
+   (eqn:Td-impulsive) into the impulsive formalism reproduces EXACTLY all
    white-noise tidal coefficients: the (a,e) sector, the (E,J) sector, the
    full Euler-angle sector of Appendix B, and the body frame.
 4. eqn:Td-large: T_d = sigma R^2 m / (4 sqrt(2 pi) G m_*^2 n a^3).
@@ -85,7 +85,7 @@ Qt_tid = Aamp_expr * r_of_E**2
 B, D = impulsive_coefficients(Qr_tid, Qt_tid)
 print(f"  done ({time.time()-t0:.0f}s)")
 
-print("(a,e) sector -> eqn:Ba-short-coherence .. eqn:Dee-short-coherence:")
+print("(a,e) sector -> eqn:Ba-white-noise .. eqn:Dee-white-noise:")
 assert_eq("B^a", B[a], targets.WHITENOISE["B^a"])
 assert_eq("B^e", B[e], targets.WHITENOISE["B^e"])
 assert_eq("D^aa", D[(a, a)], targets.WHITENOISE["D^aa"])
@@ -93,7 +93,7 @@ assert_eq("D^ae", D[(a, e)], targets.WHITENOISE["D^ae"])
 assert_eq("D^ee", D[(e, e)], targets.WHITENOISE["D^ee"])
 assert_eq("B^M0", B[M0], targets.WHITENOISE["B^M0"])
 
-print("(E,J) sector -> eqn:BE-short .. eqn:DJJ-short:")
+print("(E,J) sector -> eqn:BE-white-noise .. eqn:DJJ-white-noise:")
 assert_eq("B^E", B["E"], targets.WHITENOISE["B^E"])
 assert_eq("B^J", B["J"], targets.WHITENOISE["B^J"])
 assert_eq("D^EE", D[("E", "E")], targets.WHITENOISE["D^EE"])
@@ -113,7 +113,7 @@ assert_eq("D^omegaomega", D[(om, om)], targets.WHITENOISE_EULER["D^omegaomega"])
 assert_eq("D^omegaM0", D[(om, M0)], targets.WHITENOISE_EULER["D^omegaM0"])
 assert_eq("D^M0M0", D[(M0, M0)], targets.WHITENOISE["D^M0M0"])
 
-print("Body frame -> eqn:Dhatehate-short .. eqn:DM0M0-short:")
+print("Body frame -> eqn:Dhatehate-white-noise .. eqn:DM0M0-white-noise:")
 B_eul = [B[Om], B[inc], B[om]]
 D_eul = sp.Matrix(3, 3, lambda p, q: D[((Om, inc, om)[p], (Om, inc, om)[q])])
 D_eulM0 = [D[(Om, M0)], D[(inc, M0)], D[(om, M0)]]

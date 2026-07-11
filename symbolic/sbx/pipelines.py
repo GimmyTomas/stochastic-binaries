@@ -2,7 +2,7 @@
 
 Both pipelines return dictionaries B[mu], D[(mu, nu)] over the six slow
 variables (a, e, Omega, i, omega, M0), with the overall correlator
-normalization (eqn:TD-tidal)
+normalization (eqn:Td-tidal)
 
     Int <T_ij T_kl> dtau = (G m / (a^3 T_d)) * ONE_ijkl / 15
 
@@ -15,9 +15,9 @@ g^mu(Omega) = Rz(Omega) g^mu(0) Rz(Omega)^T exactly, and the correlator
 contraction is invariant under any joint rotation (eqn:identity-rotation).
 The d/dOmega drift terms are taken symbolically before substituting Omega = 0.
 
-* ``adiabatic_coefficients``  (sec:longcoherence, eqn:Deltaw1/eqn:Deltaww1):
+* ``adiabatic_coefficients``  (sec:adiabatic, eqn:Deltaw1/eqn:Deltaww1):
   average first, then contract; drifts differentiate the averaged force.
-* ``whitenoise_coefficients`` (sec:shortcoherence, eqn:Deltaw2/eqn:Deltaww2):
+* ``whitenoise_coefficients`` (sec:white-noise, eqn:Deltaw2/eqn:Deltaww2):
   contract first at fixed orbital phase, average at the end; drifts use the
   fixed-phase derivative (eqn:dEdedM0) through sbx.anomalies.d_fixed_phase.
 """
