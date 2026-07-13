@@ -17,6 +17,11 @@ python run_all.py          # full suite, ~12 min, exit code 0 iff all pass
 python run_all.py --fast   # skips the three heaviest scripts, ~4 min
 ```
 
+> **Known pitfall.** sympy 1.12 with the optional gmpy2 accelerator installed
+> (Anaconda default) hangs indefinitely on `check_impulsive_point_mass.py`.
+> Use sympy >= 1.13, or set `SYMPY_GROUND_TYPES=python`. See the top-level
+> README for the tested-version matrix.
+
 ## Scripts
 
 | script | verifies | time |

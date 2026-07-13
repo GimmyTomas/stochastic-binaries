@@ -21,6 +21,8 @@ Solver variables:
 
 import numpy as np
 
+trapz = getattr(np, "trapezoid", None) or np.trapz  # numpy 2.0 renamed trapz
+
 
 # ---------------------------------------------------------------------------
 # (a, e) -> (u, eps) Ito transform, generic
@@ -143,7 +145,7 @@ def pointmass_fe_reference(e_grid, logLam0):
     w = np.sqrt(np.maximum(1 - e_grid**2, 0.0))
     h_exp = e_grid * (1 + (4 * w - 4 * np.log(1 + w) + 2 * np.log(2)) / logLam0)
     h_th = 2 * e_grid
-    return tuple(h / np.trapz(h, e_grid) for h in (h_exact, h_exp, h_th))
+    return tuple(h / trapz(h, e_grid) for h in (h_exact, h_exp, h_th))
 
 
 # ---------------------------------------------------------------------------

@@ -26,6 +26,8 @@ from scipy.integrate import quad
 from scipy.interpolate import CubicSpline
 from scipy.special import j0, jn, roots_legendre
 
+trapz = getattr(np, "trapezoid", None) or np.trapz  # numpy 2.0 renamed trapz
+
 
 def rho_tilde(k):
     k = np.asarray(k)
@@ -42,8 +44,8 @@ def _fourier_pair(u, K=60.0):
     dk = min(2e-3, np.pi / (12 * max(u, 1.0)))
     k = np.arange(dk / 2, K, dk)
     w2 = rho_tilde(k) ** 2
-    ysum = 4 * np.pi * np.trapz(w2 * (1 - j0(k * u)) / k, k)
-    ydiff = 4 * np.pi * np.trapz(w2 * jn(2, k * u) / k, k)
+    ysum = 4 * np.pi * trapz(w2 * (1 - j0(k * u)) / k, k)
+    ydiff = 4 * np.pi * trapz(w2 * jn(2, k * u) / k, k)
     ysum += 4 * np.pi * 4.5 / (4 * K**4)  # analytic mean tail of rho~^2 ~ (9/2)/k^4
     return ysum, ydiff
 
@@ -86,7 +88,7 @@ class SphereKickCovariance:
         # J2(ku) ~ (ku)^2/8, so Ysum -> pi M2 u^2, Ydiff -> Ysum/2 with
         # M2 = Int rho~(k)^2 k dk
         kk = np.arange(5e-4, 400.0, 1e-3)
-        self.M2 = np.trapz(rho_tilde(kk) ** 2 * kk, kk) + 4.5 / (2 * 400.0**2)
+        self.M2 = trapz(rho_tilde(kk) ** 2 * kk, kk) + 4.5 / (2 * 400.0**2)
         self.u_grid = np.geomspace(0.05, 3e3, n_u)
         pairs = [_fourier_pair(u) for u in self.u_grid]
         self.Ysum = np.array([p[0] for p in pairs])

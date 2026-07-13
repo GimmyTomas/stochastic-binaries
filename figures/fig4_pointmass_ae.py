@@ -25,7 +25,7 @@ import numpy as np
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from common.style import setup
 from common.fp2d import FP2D
-from common.coefficients import pointmass_a_eps_coeffs, pointmass_fe_reference
+from common.coefficients import pointmass_a_eps_coeffs, pointmass_fe_reference, trapz
 
 OUT = pathlib.Path(__file__).resolve().parent / "output"
 SNAPS = [0.1, 0.3, 1.0, 3.0, 10.0]
@@ -96,7 +96,7 @@ def main():
     for t in plot_times:
         fv = sols[t].sum(axis=0) * solver.du
         fe = fv * 2 * e_cells
-        fe /= np.trapz(fe, e_cells)
+        fe /= trapz(fe, e_cells)
         ax.plot(e_cells, fe, label=rf"${t:g}$")
     fss_exact, fss, fth = pointmass_fe_reference(e_cells, LOGLAM0)
     ax.plot(e_cells, fss, "k--", lw=1.2, label=r"$f_\mathrm{ss}(a_0, e)$")
@@ -112,7 +112,7 @@ def main():
     fe_cols = []
     for t in SNAPS:
         fe = sols[t].sum(axis=0) * solver.du * 2 * e_cells
-        fe_cols.append(fe / np.trapz(fe, e_cells))
+        fe_cols.append(fe / trapz(fe, e_cells))
     # column naming mirrors the paper's fe_point_times.dat: f_ss = exact
     # a0-slice ODE solution, f_ss_exp = eqn:f-ss-point-mass at a = a0
     np.savetxt(outdir / "fig4_fe.dat",
@@ -122,7 +122,7 @@ def main():
     print(f"wrote {outdir/'fig4_pointmass_ae.pdf'}")
 
     def l1(x, y):
-        return np.trapz(np.abs(x - y), e_cells)
+        return trapz(np.abs(x - y), e_cells)
 
     fe10 = fe_cols[-1]
     print(f"final f(e) L1 distances:  to 2e = {l1(fe10, fth):.4f}   "

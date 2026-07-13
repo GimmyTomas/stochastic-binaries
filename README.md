@@ -53,10 +53,22 @@ python regularization-exactness/deflection_map_check.py
 python regularization-exactness/cutoff_check.py
 ```
 
-Tested with Python >= 3.9, numpy >= 1.24, scipy >= 1.10, sympy >= 1.12,
-mpmath >= 1.3, matplotlib >= 3.7. Everything is pure Python; no compilation
+Requirement floors (all verified): Python >= 3.9, numpy >= 1.24 (1.x and
+2.x both work), scipy >= 1.10, sympy >= 1.13, mpmath >= 1.3,
+matplotlib >= 3.7. Tested with Python 3.9.18 (numpy 1.26, scipy 1.11,
+matplotlib 3.8) and Python 3.12.1 (numpy 2.4, scipy 1.17, matplotlib 3.10),
+with sympy 1.12, 1.13.3 and 1.14. Everything is pure Python; no compilation
 or installation step is needed (scripts locate their shared modules
 relative to their own path).
+
+> **Known pitfall.** sympy 1.12 also works, *except* when the optional
+> accelerator [gmpy2](https://pypi.org/project/gmpy2/) is installed (Anaconda
+> base environments ship gmpy2, and sympy silently adopts it as its integer
+> "ground types"): with sympy 1.12 + gmpy2 2.1.2,
+> `symbolic/check_impulsive_point_mass.py` grinds without terminating (we
+> killed it after 6.5 h; every other script is unaffected). sympy >= 1.13 is
+> immune (verified against gmpy2 2.1.2), and setting the environment variable
+> `SYMPY_GROUND_TYPES=python` also fixes sympy 1.12 (verified, ~3.5 min).
 
 ## Conventions
 

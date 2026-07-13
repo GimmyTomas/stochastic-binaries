@@ -24,7 +24,7 @@ import numpy as np
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from common.style import setup, COLORS
 from common.fp2d import FP2D
-from common.coefficients import whitenoise_xe_coeffs
+from common.coefficients import whitenoise_xe_coeffs, trapz
 
 OUT = pathlib.Path(__file__).resolve().parent / "output"
 SNAPS = [0.1, 0.3, 1.0, 3.0, 10.0]
@@ -97,10 +97,10 @@ def main():
     for t in plot_times:
         fv = sols[t].sum(axis=0) * solver.du       # f(eps)
         fe = fv * 2 * e_cells                       # f(e)
-        fe /= np.trapz(fe, e_cells)
+        fe /= trapz(fe, e_cells)
         ax.plot(e_cells, fe, label=rf"${t:g}$")
     fss = e_cells / (4 + 5 * e_cells**2) ** (36 / 35)
-    fss /= np.trapz(fss, e_cells)
+    fss /= trapz(fss, e_cells)
     ax.plot(e_cells, fss, "k--", lw=1.2, label=r"$f_\mathrm{ss}(e)$")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, None)
@@ -118,7 +118,7 @@ def main():
     fe_cols = []
     for t in SNAPS:
         fe = sols[t].sum(axis=0) * solver.du * 2 * e_cells
-        fe_cols.append(fe / np.trapz(fe, e_cells))
+        fe_cols.append(fe / trapz(fe, e_cells))
     np.savetxt(outdir / "fig3_fe.dat",
                np.column_stack([e_cells] + fe_cols + [fss]),
                header="e " + " ".join(f"f_t{t:g}" for t in SNAPS) + " f_ss")
