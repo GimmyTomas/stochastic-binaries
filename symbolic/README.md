@@ -23,7 +23,7 @@ python run_all.py --fast   # skips the three heaviest scripts, ~4 min
 |---|---|---|
 | `tests_averaging.py` | every orbit-average moment table entry vs 50-digit quadrature | 10 s |
 | `check_form_factors.py` | Table I: mass norms, I(b), rho~(k), and the Hankel relation eqn:rho(k), for all four extended profiles | 30 s |
-| `check_steady_states.py` | thermal 2e, f_0 = sqrt(a) e, f_ss with the 36/35 exponent (incl. uniqueness), sub-thermal point-mass f_ss, Penarrubia ratios 5/3 and (2+e^2)/(2-e^2), B^J = D^JJ/2J, e->0/1 limits | 40 s |
+| `check_steady_states.py` | thermal 2e, f_0 = sqrt(a) e, f_ss with the 36/35 exponent (incl. uniqueness), sub-thermal point-mass f_ss with the full logLambda(a,e) (J^e and d_a J^a vanish at the two leading orders in logLambda_0, (2e/3) logLambda_0 outward flux, cross-term a-independence, g/(a^2 logLambda) ansatz expansion, integrating-factor a_0-slice consistency), Penarrubia ratios 5/3 and (2+e^2)/(2-e^2), B^J = D^JJ/2J, e->0/1 limits | 40 s |
 | `check_kick_covariance.py` | Maxwellian moments incl. <V^-1 log V^4>, the Y_perp -/+ Y_par integrals (point-mass, Gaussian-regulated, b90-regulated), the exact -2/3 and -8/3 constants of Q_r, Q_t, Parseval consistency | 2 min |
 | `check_tidal_adiabatic.py` | sec:adiabatic: all coefficients in (a,e), (E,J), Euler angles (App. B) and the body frame; rotation-invariance lemmas | 40 s |
 | `check_tidal_whitenoise.py` | sec:white-noise: same four parametrizations; (E,J) also via the first-principles route of App. C; guard test proving the fixed-phase dE/de, dE/dM0 terms (eqn:dEdedM0) are essential; e->0 degeneracy of the (Jhat, M0) block | 1 min |

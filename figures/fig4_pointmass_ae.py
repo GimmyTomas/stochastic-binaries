@@ -1,14 +1,17 @@
 """Figure 4 (fig:f-point-mass): numerical solution of the (a, e) sector of
 the Fokker--Planck equation for IMPULSIVE encounters with point-mass
 perturbers (sec:point-mass), using the closed-form coefficients
-eqn:Ba-point-mass .. eqn:Dee-point-mass with the Coulomb logarithm held
-FIXED at logLambda = 25, as in the caption.
+eqn:Ba-point-mass .. eqn:Dee-point-mass with the FULL effective Coulomb
+logarithm logLambda(a, e) of eqn:logLambda, split around its constant part
+logLambda_0 = logLambda(a0, e=0) = 15, as in the caption.
 
-Time is in units of T_d0 = T_d(a = a0, e = 0.5) computed from eqn:Td*.
-Grid: (a/a0, eps = e^2) on [0.1, 16] x [0, 1] (linear x eps); initial
-condition, boundary conditions, and panel structure as in Figure 3. The
-eccentricity marginal relaxes to the slightly SUB-thermal quasi-stationary
-distribution eqn:f-ss-point-mass (overlaid, together with the thermal 2e).
+Time is in units of T_d0 = T_d(a = a0, e = 0.5) computed from eqn:Td* with
+the full logLambda(a0, e0) in the bracket. Grid: (a/a0, eps = e^2) on
+[0.1, 16] x [0, 1] (linear x eps); initial condition, boundary conditions,
+and panel structure as in Figure 3. The eccentricity marginal relaxes to
+the slightly SUB-thermal quasi-stationary distribution eqn:f-ss-point-mass
+evaluated at a = a0 (overlaid, together with the thermal 2e; the exact
+a0-slice ODE solution is written to fig4_fe.dat and used in an L1 gate).
 
 Runtime: ~4 min (default 600x240 grid).  --fast: 300x120, ~30 s.
 """
@@ -22,12 +25,12 @@ import numpy as np
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from common.style import setup
 from common.fp2d import FP2D
-from common.coefficients import pointmass_a_eps_coeffs
+from common.coefficients import pointmass_a_eps_coeffs, pointmass_fe_reference
 
 OUT = pathlib.Path(__file__).resolve().parent / "output"
 SNAPS = [0.1, 0.3, 1.0, 3.0, 10.0]
 HEAT_TIMES = [0.1, 3.0]
-LOGLAM = 25.0
+LOGLAM0 = 15.0
 
 
 def initial_condition(solver, a0=1.0, e0=0.5, sig_a=0.05, sig_e=0.03):
@@ -50,10 +53,11 @@ def main():
     Na, Ne, dt = (300, 120, 2.4e-2) if args.fast else (600, 240, 1.2e-2)
     a_edges = np.linspace(0.1, 16.0, Na + 1)
     v_edges = np.linspace(0, 1, Ne + 1)
-    solver = FP2D(a_edges, v_edges, pointmass_a_eps_coeffs(logLam=LOGLAM, e0=0.5),
+    solver = FP2D(a_edges, v_edges, pointmass_a_eps_coeffs(logLam0=LOGLAM0, e0=0.5),
                   bc=("reflect", "absorb", "reflect", "reflect"))
     f0 = initial_condition(solver)
-    print(f"grid {Na}x{Ne}, logLambda = {LOGLAM}, evolving to t = {SNAPS[-1]} T_d0 ...")
+    print(f"grid {Na}x{Ne}, logLambda_0 = {LOGLAM0} (full logLambda(a,e)), "
+          f"evolving to t = {SNAPS[-1]} T_d0 ...")
     sols = solver.evolve(f0, SNAPS[-1], dt, SNAPS)
     for t in SNAPS:
         print(f"  t = {t:5.1f}: surviving fraction = {solver.mass(sols[t]):.4f}")
@@ -94,12 +98,8 @@ def main():
         fe = fv * 2 * e_cells
         fe /= np.trapz(fe, e_cells)
         ax.plot(e_cells, fe, label=rf"${t:g}$")
-    w = np.sqrt(1 - e_cells**2)
-    chi = 4 * w - 2 * np.log(1 + w)
-    fss = 2 * e_cells * (1 + chi / LOGLAM)
-    fss /= np.trapz(fss, e_cells)
-    fth = 2 * e_cells / np.trapz(2 * e_cells, e_cells)
-    ax.plot(e_cells, fss, "k--", lw=1.2, label=r"$f_\mathrm{ss}(e)$")
+    fss_exact, fss, fth = pointmass_fe_reference(e_cells, LOGLAM0)
+    ax.plot(e_cells, fss, "k--", lw=1.2, label=r"$f_\mathrm{ss}(a_0, e)$")
     ax.plot(e_cells, fth, "k:", lw=1.2, label=r"$f_\mathrm{th} = 2e$")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, None)
@@ -113,10 +113,23 @@ def main():
     for t in SNAPS:
         fe = sols[t].sum(axis=0) * solver.du * 2 * e_cells
         fe_cols.append(fe / np.trapz(fe, e_cells))
+    # column naming mirrors the paper's fe_point_times.dat: f_ss = exact
+    # a0-slice ODE solution, f_ss_exp = eqn:f-ss-point-mass at a = a0
     np.savetxt(outdir / "fig4_fe.dat",
-               np.column_stack([e_cells] + fe_cols + [fss, fth]),
-               header="e " + " ".join(f"f_t{t:g}" for t in SNAPS) + " f_ss f_th")
+               np.column_stack([e_cells] + fe_cols + [fss_exact, fss, fth]),
+               header="e " + " ".join(f"f_t{t:g}" for t in SNAPS)
+                      + " f_ss f_ss_exp f_th")
     print(f"wrote {outdir/'fig4_pointmass_ae.pdf'}")
+
+    def l1(x, y):
+        return np.trapz(np.abs(x - y), e_cells)
+
+    fe10 = fe_cols[-1]
+    print(f"final f(e) L1 distances:  to 2e = {l1(fe10, fth):.4f}   "
+          f"to f_ss(exact) = {l1(fe10, fss_exact):.4f}   "
+          f"to f_ss(exp) = {l1(fe10, fss):.4f}")
+    ok = l1(fe10, fss) < 0.015 and l1(fe10, fss) < l1(fe10, fth)
+    print("gate (L1 to f_ss < 0.015 and < L1 to thermal):", "PASS" if ok else "FAIL")
 
 
 if __name__ == "__main__":

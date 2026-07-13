@@ -11,7 +11,7 @@ Conventions:
 
 import sympy as sp
 
-from .symbols import a, e, G, m, Td, Tds, LogLam, Om, inc, om, SQ
+from .symbols import a, a0, e, G, m, Td, Tds, LogLam, LogLam0, Om, inc, om, SQ
 
 EE = -G * m / (2 * a)
 JJ = sp.sqrt(G * m * a * (1 - e**2))
@@ -186,5 +186,14 @@ POINT_MASS["B^J"] = POINT_MASS["D^JJ"] / (2 * JJ)
 # eqn:Td*: 1/(15 T_d^*) relation to T_d (both directions are checked)
 TDSTAR_BRACKET = LogLam - sp.Rational(8, 3) + 4 * sp.log(2 * SQ / (1 + SQ))
 
-# eqn:f-ss-point-mass correction chi(e): f_ss ~ 2e/a^2 (1 + chi/logLambda)
-F_SS_PM_CHI = 4 * SQ - 2 * sp.log(1 + SQ)
+# eqn:logLambda split around (a_0, e = 0): logLambda(a, e) = logLambda_0
+#   + 2 log(a/a_0) + 2 log((1 + sqrt(1-e^2))/2),  logLambda_0 = logLambda(a_0, 0)
+LOGLAM_PM_SPLIT = LogLam0 + 2 * sp.log(a / a0) + 2 * sp.log((1 + SQ) / 2)
+
+# eqn:f-ss-point-mass: f_ss ~ (2e/a^2)(1 + F_SS_PM_CHI/logLambda_0)
+F_SS_PM_CHI = -2 * sp.log(a / a0) + 4 * SQ - 4 * sp.log(1 + SQ) + 2 * sp.log(2)
+
+# g(e)-numerator correction of the ansatz f_ss = g/(a^2 logLambda(a, e)):
+# g = 2e (1 + F_SS_PM_G_CHI/logLambda_0); expanding g/(a^2 logLambda) to
+# O(1/logLambda_0) reproduces F_SS_PM_CHI (checked in check_steady_states.py)
+F_SS_PM_G_CHI = 4 * SQ - 2 * sp.log(1 + SQ)

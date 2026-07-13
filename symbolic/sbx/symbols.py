@@ -38,6 +38,8 @@ M0 = sp.Symbol("M_0", real=True)              # mean anomaly at epoch
 Td = sp.Symbol("T_d", positive=True)          # diffusion time, eqn:Td-tidal / eqn:Td-impulsive
 Tds = sp.Symbol("T_d^*", positive=True)       # T_d^*, eqn:Td*
 LogLam = sp.Symbol("logLambda", real=True)    # effective Coulomb logarithm, eqn:logLambda
+LogLam0 = sp.Symbol("logLambda_0", positive=True)  # constant part logLambda(a_0, e=0)
+a0 = sp.Symbol("a_0", positive=True)          # reference semi-major axis
 La = sp.Symbol("L_a", real=True)              # r-independent part of L(r): L(r) = La + 2*LNU
 kappa = sp.Symbol("kappa", positive=True)     # 8*sqrt(2*pi)*G^2*m_*^2*n/(3*sigma)
 Aamp = sp.Symbol("A", positive=True)          # tidal-limit amplitude: Q_t = A r^2

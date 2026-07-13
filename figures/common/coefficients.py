@@ -8,9 +8,12 @@ the draft (and to symbolic/check_* scripts that verify those equations).
 Solver variables:
 * white-noise tidal  (fig 3):  u = x = ln(a/a0),  v = eps = e^2,
   with T_d(a) = (a0/a)^3 T_d0 (eqn:Td-tidal), units a0 = T_d0 = 1;
-* point-mass impulsive (fig 4): u = a/a0 (linear), v = eps = e^2, fixed
-  logLambda, with 1/T_d*(a) ~ a (eqn:Td*), time in units of
-  T_d0 = T_d(a0, e0=0.5) from eqn:Td* -- as in the caption of fig 4;
+* point-mass impulsive (fig 4): u = a/a0 (linear), v = eps = e^2, with the
+  FULL effective Coulomb logarithm logLambda(a, e) = logLam0 + 2 log(a/a0)
+  + 2 log((1+s)/2) (eqn:logLambda; the figure uses logLam0 = 15) and
+  1/T_d*(a) ~ a (eqn:Td*); time in units of T_d0 = T_d(a0, e0=0.5) from
+  eqn:Td* with the full logLambda(a0, e0) in the bracket -- as in the
+  caption of fig 4;
 * generic-Q impulsive (fig 6): u = x = ln(a/a0), v = eps, coefficients from
   E-grid quadrature of the general integrands eqn:Ba-impulsive ..
   eqn:Dee-impulsive given tabulated Q_r(r), Q_t(r).
@@ -69,17 +72,27 @@ def whitenoise_xe_coeffs():
 # ---------------------------------------------------------------------------
 def td_ratio_pointmass(e, logLam):
     """T_d / T_d^* = sqrt(1-e^2)/[logLam - 8/3 + 4 log(2 sqrt(1-e^2)/(1+sqrt(1-e^2)))]
-    (eqn:Td*)."""
+    (eqn:Td*; logLam is the full Coulomb logarithm at the evaluation point)."""
     w = np.sqrt(1 - e**2)
     return w / (logLam - 8 / 3 + 4 * np.log(2 * w / (1 + w)))
 
 
-def pointmass_ae(a, e, logLam, invTds0=1.0):
-    """Draft (a,e) point-mass coefficients; 1/T_d*(a) = invTds0 * a
+def loglam_pointmass(a, e, logLam0):
+    """Full effective Coulomb logarithm (eqn:logLambda), split around its
+    constant part logLam0 = logLambda(a0, e=0):
+    L(a, e) = logLam0 + 2 log(a/a0) + 2 log((1+s)/2), s = sqrt(1-e^2);
+    units a0 = 1."""
+    s = np.sqrt(np.maximum(1 - e**2, 0.0))
+    return logLam0 + 2 * np.log(a) + 2 * np.log(0.5 * (1 + s))
+
+
+def pointmass_ae(a, e, logLam0, invTds0=1.0):
+    """Draft (a,e) point-mass coefficients with the full logLambda(a, e)
+    built from its constant part logLam0; 1/T_d*(a) = invTds0 * a
     (eqn:Td*: T_d^* ~ 1/a; units a0 = 1)."""
     w = np.sqrt(np.maximum(1 - e**2, 1e-30))
     pref = invTds0 * a / 15
-    L = logLam
+    L = loglam_pointmass(a, e, logLam0)
     e_s = np.maximum(e, 1e-30)
     Ba = pref * a * (7 * L - 32 / 3 - 6 * w)
     Be = pref * (5 * (1 - 3 * e**2) / (4 * e_s) * L
@@ -93,22 +106,44 @@ def pointmass_ae(a, e, logLam, invTds0=1.0):
     return Ba, Be, Daa, Dae, Dee
 
 
-def pointmass_a_eps_coeffs(logLam=25.0, e0=0.5):
+def pointmass_a_eps_coeffs(logLam0=15.0, e0=0.5):
     """Coefficient callables for the (a, eps = e^2) solver, in time units of
-    T_d0 = T_d(a0 = 1, e0) evaluated from eqn:Td* at the given logLambda
-    (caption of fig:f-point-mass)."""
+    T_d0 = T_d(a0 = 1, e0) evaluated from eqn:Td* with the full
+    logLambda(a0, e0) in the bracket (caption of fig:f-point-mass)."""
     # T_d(a0, e0) = T_d^*(a0) * td_ratio; solver time is t/T_d0, so we need
     # 1/T_d^*(a) = a / T_d^*(a0) = a * td_ratio / T_d0  ->  invTds0 = td_ratio
-    invTds0 = td_ratio_pointmass(np.array(e0), logLam)
+    invTds0 = td_ratio_pointmass(np.asarray(e0), loglam_pointmass(1.0, np.asarray(e0), logLam0))
 
     def make(k):
         def f(A, V):
             e = np.sqrt(np.maximum(V, 1e-30))
-            vals = _ito_ae(*pointmass_ae(A, e, logLam, invTds0), A, e, log_a=False)
+            vals = _ito_ae(*pointmass_ae(A, e, logLam0, invTds0), A, e, log_a=False)
             return vals[k]
         return f
     keys = ["Bu", "Bv", "Duu", "Duv", "Dvv"]
     return {key: make(k) for k, key in enumerate(keys)}
+
+
+def pointmass_fe_reference(e_grid, logLam0):
+    """a0-slice steady-state references for the fig 4 overlay/data file.
+
+    Returns (h_exact, h_exp, h_th), each normalized to unit integral on e_grid:
+    * h_exact -- integrating-factor solution h = exp(int 2 B^e/D^ee de)/D^ee of
+      the a0-slice ODE B^e h = (1/2) d_e(D^ee h) with the full logLambda(a0, e)
+      (the cross term d_a(D^ae f) is O(1/logLam0^2), see sec:point-mass);
+    * h_exp -- its O(1/logLam0) expansion, i.e. eqn:f-ss-point-mass at a = a0;
+    * h_th -- thermal 2e (leading log).
+    """
+    ones = np.ones_like(e_grid)
+    _, Bhat, _, _, Dhat = pointmass_ae(ones, e_grid, logLam0)  # a = a0 = 1
+    integrand = 2 * Bhat / Dhat
+    u = np.concatenate([[0.0], np.cumsum(0.5 * (integrand[1:] + integrand[:-1])
+                                         * np.diff(e_grid))])
+    h_exact = np.clip(np.exp(u - u.max()) / Dhat, 0.0, None)
+    w = np.sqrt(np.maximum(1 - e_grid**2, 0.0))
+    h_exp = e_grid * (1 + (4 * w - 4 * np.log(1 + w) + 2 * np.log(2)) / logLam0)
+    h_th = 2 * e_grid
+    return tuple(h / np.trapz(h, e_grid) for h in (h_exact, h_exp, h_th))
 
 
 # ---------------------------------------------------------------------------
