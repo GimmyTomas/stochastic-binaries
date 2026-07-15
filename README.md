@@ -85,12 +85,13 @@ equation label it implements.
 If you use this code, please cite the paper (arXiv number to be added):
 
 ```bibtex
-@article{Caputo:2026xxx,
+@article{Caputo:2026fuj,
     author = "Caputo, Andrea and Tomaselli, Giovanni Maria and Hamilton, Chris",
     title = "{Evolution of Binaries Under Stochastic Perturbations}",
-    eprint = "XXXX.XXXXX",
+    eprint = "2607.12011",
     archivePrefix = "arXiv",
     primaryClass = "astro-ph.GA",
+    month = "7",
     year = "2026"
 }
 ```
