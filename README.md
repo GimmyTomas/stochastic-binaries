@@ -82,7 +82,7 @@ equation label it implements.
 
 ## Citation
 
-If you use this code, please cite the paper (arXiv number to be added):
+If you use this code, please cite the paper:
 
 ```bibtex
 @article{Caputo:2026fuj,
